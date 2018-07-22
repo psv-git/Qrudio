@@ -29,6 +29,9 @@
    <iconset theme="radio">
     <normaloff>.</normaloff>.</iconset>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
   </property>
@@ -83,6 +86,8 @@
 QTabBar:tab {
 	width: 30px;
 	height: 50px;
+
+	background-color: rgb(200, 200, 200);
 	
 	border-top: 1px solid  rgb(20, 20, 20);
 	border-right: 1px solid  rgb(20, 20, 20);
@@ -91,7 +96,14 @@ QTabBar:tab {
 	padding-top: -15px;
 	padding-bottom: 15px;
 }
+
+QTabBar:tab:selected {
+    background-color: rgb(190, 190, 190);
+}
 </string>
+    </property>
+    <property name="locale">
+     <locale language="English" country="UnitedStates"/>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::West</enum>
@@ -124,10 +136,19 @@ QTabBar:tab {
      <bool>false</bool>
     </property>
     <widget class="QWidget" name="playTab">
+     <property name="styleSheet">
+      <string notr="true">QWidget {
+	background-color: rgb(240, 240, 240);
+}
+</string>
+     </property>
      <attribute name="title">
       <string/>
      </attribute>
      <widget class="QPushButton" name="prevPlayButton">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -147,6 +168,29 @@ QTabBar:tab {
         <width>40</width>
         <height>30</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	font: 75 12pt &quot;Liberation Sans&quot;;
+	color: rgb(255, 255, 255);
+
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
+
+	border: 1px solid  rgb(0, 0, 0);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+}
+
+QPushButton:disabled {
+	background-color: rgb(220, 220, 220);
+}
+</string>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
       </property>
       <property name="text">
        <string/>
@@ -172,6 +216,26 @@ QTabBar:tab {
         <width>40</width>
         <height>30</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	font: 75 12pt &quot;Liberation Sans&quot;;
+	color: rgb(255, 255, 255);
+
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
+
+	border: 1px solid  rgb(0, 0, 0);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+}
+
+QPushButton:disabled {
+	background-color: rgb(220, 220, 220);
+}
+</string>
       </property>
       <property name="text">
        <string/>
@@ -204,6 +268,29 @@ QTabBar:tab {
         <height>30</height>
        </size>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	font: 75 12pt &quot;Liberation Sans&quot;;
+	color: rgb(255, 255, 255);
+
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
+
+	border: 1px solid  rgb(0, 0, 0);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+}
+
+QPushButton:disabled {
+	background-color: rgb(220, 220, 220);
+}
+</string>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -220,6 +307,12 @@ QTabBar:tab {
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
+      <property name="minimum">
+       <number>-1</number>
+      </property>
       <property name="maximum">
        <number>100</number>
       </property>
@@ -230,7 +323,10 @@ QTabBar:tab {
        <number>1</number>
       </property>
       <property name="value">
-       <number>0</number>
+       <number>-1</number>
+      </property>
+      <property name="sliderPosition">
+       <number>-1</number>
       </property>
       <property name="tracking">
        <bool>true</bool>
@@ -254,8 +350,14 @@ QTabBar:tab {
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
       <property name="text">
        <string comment="Name track">Track title</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::PlainText</enum>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
@@ -264,10 +366,10 @@ QTabBar:tab {
        <set>Qt::AlignCenter</set>
       </property>
       <property name="wordWrap">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="openExternalLinks">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="textInteractionFlags">
        <set>Qt::NoTextInteraction</set>
@@ -296,6 +398,29 @@ QTabBar:tab {
         <width>40</width>
         <height>30</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	font: 75 12pt &quot;Liberation Sans&quot;;
+	color: rgb(255, 255, 255);
+
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
+
+	border: 1px solid  rgb(0, 0, 0);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+}
+
+QPushButton:disabled {
+	background-color: rgb(220, 220, 220);
+}
+</string>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
       </property>
       <property name="text">
        <string/>
@@ -331,6 +456,29 @@ QTabBar:tab {
         <height>30</height>
        </size>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	font: 75 12pt &quot;Liberation Sans&quot;;
+	color: rgb(255, 255, 255);
+
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
+
+	border: 1px solid  rgb(0, 0, 0);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+}
+
+QPushButton:disabled {
+	background-color: rgb(220, 220, 220);
+}
+</string>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -349,6 +497,9 @@ QTabBar:tab {
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
       </property>
       <property name="text">
        <string comment="Name track">Sample:</string>
@@ -387,6 +538,9 @@ QTabBar:tab {
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
       <property name="text">
        <string comment="Name track">Bitrate:</string>
       </property>
@@ -424,6 +578,9 @@ QTabBar:tab {
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
       <property name="text">
        <string comment="Name track"/>
       </property>
@@ -460,6 +617,9 @@ QTabBar:tab {
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
       </property>
       <property name="text">
        <string comment="Name track"/>
@@ -504,6 +664,29 @@ QTabBar:tab {
         <height>30</height>
        </size>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	font: 75 12pt &quot;Liberation Sans&quot;;
+	color: rgb(255, 255, 255);
+
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
+
+	border: 1px solid  rgb(0, 0, 0);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+}
+
+QPushButton:disabled {
+	background-color: rgb(220, 220, 220);
+}
+</string>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -522,6 +705,12 @@ QTabBar:tab {
      <zorder>searchButton</zorder>
     </widget>
     <widget class="QWidget" name="stationTab">
+     <property name="styleSheet">
+      <string notr="true">QWidget {
+	background-color: rgb(240, 240, 240);
+}
+</string>
+     </property>
      <attribute name="title">
       <string notr="true"/>
      </attribute>
@@ -646,6 +835,12 @@ QTabBar:tab {
      </widget>
     </widget>
     <widget class="QWidget" name="settingsTab">
+     <property name="styleSheet">
+      <string notr="true">QWidget {
+	background-color: rgb(240, 240, 240);
+}
+</string>
+     </property>
      <attribute name="title">
       <string/>
      </attribute>

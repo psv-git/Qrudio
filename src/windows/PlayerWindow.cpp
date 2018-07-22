@@ -27,7 +27,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
 
   setThemeColor(m_themeColor);
   m_ui->runOnTrayCheckBox->setChecked(m_isRunOnTray);
-  m_ui->stationsTableView->setModel(m_playerHandler->getPlaylistModel()); // connect playlist to view
+  m_ui->stationsTableView->setModel(m_playerHandler->getPlaylistModel()); // set playlist model to table view model
   m_ui->stationsTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 //  m_playerHandler->addStation("Nashe", "http://nashe1.hostingradio.ru/nashe-128.mp3");
 //  m_playerHandler->addStation("Europa+", "http://ep128.streamr.ru");
@@ -74,11 +74,12 @@ PlayerWindow::~PlayerWindow() {
 // public methods =============================================================
 
 void PlayerWindow::run() {
-  m_trayIcon->show();
-  m_ui->volumeSlider->setValue(m_volume); // manually change slider value dont call slot
-  onVolumeSliderChange(m_volume);
+  if (m_volume < 0 || m_volume > 100) m_volume = 0;
+  m_ui->volumeSlider->setValue(m_volume);
+  m_ui->volumeSlider->setMinimum(0); // valueChanged() signal cant emited if (m_volume == slider value), so im set it to -1 from form creator; now, after signal emitted, im set minimal possible slider value back to 0
   if (m_isPlay) playback(STATE::PLAY);
-  if (!m_isRunOnTray) show();
+  if (!m_isRunOnTray) this->show();
+  m_trayIcon->show();
 }
 
 // events =====================================================================
@@ -97,15 +98,15 @@ void PlayerWindow::closeEvent(QCloseEvent *ev) {
 // private slots ==============================================================
 
 void PlayerWindow::toggleWindowVisibleAction() {
-  if (this->isVisible()) hide();
-  else show();
+  if (this->isVisible()) this->hide();
+  else this->show();
 }
 
 
 // close application by system tray
 void PlayerWindow::exitAction() {
   m_isExit = true;
-  close();
+  this->close(); // invoke close event
 }
 
 
@@ -128,8 +129,7 @@ void PlayerWindow::onPlayButtonRelease() {
 
 
 void PlayerWindow::onStopButtonRelease() {
-  if (!m_isPlay) return;
-  playback(STATE::STOP);
+  if (m_isPlay) playback(STATE::STOP);
 }
 
 
@@ -144,6 +144,7 @@ void PlayerWindow::onSearchButtonRelease() {
 
 void PlayerWindow::onAddButtonRelease() {
   if (!m_ui->stationNameEdit->text().isEmpty() && !m_ui->stationUrlEdit->text().isEmpty()) {
+    // TODO: check to exist
     m_playerHandler->addStation(m_ui->stationNameEdit->text(), m_ui->stationUrlEdit->text());
   }
 }
@@ -166,7 +167,7 @@ void PlayerWindow::onStationRowClick(const QModelIndex &index) {
 
 
 void PlayerWindow::onStationRowDoubleClick(const QModelIndex &index) {
-  playback(STATE::PLAY);
+  playback(STATE::PLAY); // clicked element index was setted from single click slot
 }
 
 
@@ -200,10 +201,10 @@ void PlayerWindow::onRunOnTrayBoxClick(bool checked) {
 
 void PlayerWindow::onTrayIconClick(QSystemTrayIcon::ActivationReason r) {
   if (r != QSystemTrayIcon::Trigger && r != QSystemTrayIcon::DoubleClick) return;
-  if (!m_isTrayWasClicked) {
+  if (!m_isTrayWasClicked) { // first click on tray icon
     m_isTrayWasClicked = true;
     Delay(200); // delay after first click on tray icon
-  } else {
+  } else { // second click on tray icon
     m_isTrayWasClicked = false;
     toggleWindowVisibleAction();
   }
@@ -227,7 +228,7 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
   m_themeColor = themeColor;
 
   if (themeColor == LIGHT) {
-    m_iconsPath = ":/icons/light-theme/";
+    m_iconsPath = ":/icons/light-theme/"; // path to icons from Resources.qrc
     m_ui->lightThemeRadioButton->setChecked(true);
     m_ui->darkThemeRadioButton->setChecked(false);
   } else {
@@ -235,9 +236,6 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
     m_ui->lightThemeRadioButton->setChecked(false);
     m_ui->darkThemeRadioButton->setChecked(true);
   }
-
-  // tray icon
-  setTrayIcon();
 
   // tabs icons
   QIcon icon = QIcon::fromTheme("media-playback-start", QIcon(m_iconsPath + "play.svg"));
@@ -259,7 +257,7 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
   m_ui->editButton->setIcon(QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit-1.svg")));
   m_ui->saveButton->setIcon(QIcon::fromTheme("document-save", QIcon(m_iconsPath + "save.svg")));
 
-  // window icon
+  setTrayIcon();
   setWindowIcon(QIcon(m_iconsPath + "qrudio.svg"));
 
   SettingsHandler::getInstance().setSetting("", "theme_color", m_themeColor);
@@ -267,7 +265,7 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
 
 
 void PlayerWindow::setTrayIcon() {
-  if (!m_isPlay) m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-off.svg"));
+  if (!m_isPlay) m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-off.svg")); // order is important
   else if (m_isMuted) m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-mute.svg"));
   else if (m_isPlay) m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-on.svg"));
 }

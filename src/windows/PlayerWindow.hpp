@@ -20,9 +20,8 @@ public:
   explicit PlayerWindow(QWidget *parent = nullptr);
   ~PlayerWindow();
 
-  void run();
-
   void closeEvent(QCloseEvent *ev);
+  void run();
 
 private slots:
   void toggleWindowVisibleAction();
