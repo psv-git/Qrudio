@@ -34,5 +34,7 @@
         <file>icons/light-theme/tray-on.svg</file>
         <file>icons/dark-theme/qrudio.svg</file>
         <file>icons/light-theme/qrudio.svg</file>
+        <file>icons/light-theme/tray-mute.svg</file>
+        <file>icons/dark-theme/tray-mute.svg</file>
     </qresource>
 </RCC>

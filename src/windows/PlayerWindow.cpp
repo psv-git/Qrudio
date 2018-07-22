@@ -10,24 +10,29 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
 
   // get settings -------------------------------------------------------------
 
+  m_isPlay = SettingsHandler::getInstance().getSetting("", "is_play", false).toBool();
   m_themeColor = qvariant_cast<THEME>(SettingsHandler::getInstance().getSetting("", "theme_color", LIGHT));
   m_isRunOnTray = SettingsHandler::getInstance().getSetting("", "run_on_tray", false).toBool();
-  int volume = SettingsHandler::getInstance().getSetting("", "volume", 0).toInt();
+  m_volume = SettingsHandler::getInstance().getSetting("", "volume", 0).toInt();
 
   // setup --------------------------------------------------------------------
 
-  initUi();
-  m_ui->stopButton->hide();
+  m_ui->setupUi(this);
+  m_trayIcon = new QSystemTrayIcon(this);
+  m_trayContextMenu = new QMenu("&Menu");
+  m_trayContextMenu->addAction("&Show/Hide", this, SLOT(toggleWindowVisibleAction()));
+  m_trayContextMenu->addAction("&Mute/Unmute", this, SLOT(muteAction()));
+  m_trayContextMenu->addAction("&Exit", this, SLOT(exitAction()));
+  m_trayIcon->setContextMenu(m_trayContextMenu);
+
+  setThemeColor(m_themeColor);
   m_ui->runOnTrayCheckBox->setChecked(m_isRunOnTray);
-  m_ui->volumeSlider->setValue(volume);
   m_ui->stationsTableView->setModel(m_playerHandler->getPlaylistModel()); // connect playlist to view
-
-  m_playerHandler->addStation("Nashe", "http://nashe1.hostingradio.ru/nashe-128.mp3");
-  m_playerHandler->addStation("Europa+", "http://ep128.streamr.ru");
-
+  m_ui->stationsTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+//  m_playerHandler->addStation("Nashe", "http://nashe1.hostingradio.ru/nashe-128.mp3");
+//  m_playerHandler->addStation("Europa+", "http://ep128.streamr.ru");
   m_ui->stationsTableView->hideColumn(1); // hide url column
-  m_trayIcon->show();
-  m_playerHandler->setVolume(volume);
+  m_ui->stopButton->hide();
 
   // signals ------------------------------------------------------------------
 
@@ -59,6 +64,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
 
 
 PlayerWindow::~PlayerWindow() {
+  SettingsHandler::getInstance().setSetting("", "is_play", m_isPlay);
   if (m_playerHandler) delete m_playerHandler;
   if (m_trayIcon) delete m_trayIcon;
   if (m_trayContextMenu) delete m_trayContextMenu;
@@ -68,6 +74,10 @@ PlayerWindow::~PlayerWindow() {
 // public methods =============================================================
 
 void PlayerWindow::run() {
+  m_trayIcon->show();
+  m_ui->volumeSlider->setValue(m_volume); // manually change slider value dont call slot
+  onVolumeSliderChange(m_volume);
+  if (m_isPlay) playback(STATE::PLAY);
   if (!m_isRunOnTray) show();
 }
 
@@ -87,7 +97,7 @@ void PlayerWindow::closeEvent(QCloseEvent *ev) {
 // private slots ==============================================================
 
 void PlayerWindow::toggleWindowVisibleAction() {
-  if (isVisible()) hide();
+  if (this->isVisible()) hide();
   else show();
 }
 
@@ -99,9 +109,16 @@ void PlayerWindow::exitAction() {
 }
 
 
+void PlayerWindow::muteAction() {
+  if (!m_isPlay) return;
+  if (m_isMuted) m_ui->volumeSlider->setValue(m_volume);
+  else m_ui->volumeSlider->setValue(0);
+}
+
+
 void PlayerWindow::onPlayButtonRelease() {
   if (sender() == m_ui->playButton) {
-    if (!m_isPlaying) playback(STATE::PLAY);
+    if (!m_isPlay) playback(STATE::PLAY);
   } else if (sender() == m_ui->prevPlayButton) {
     playback(STATE::BACKWARD);
   } else if (sender() == m_ui->nextPlayButton) {
@@ -111,17 +128,12 @@ void PlayerWindow::onPlayButtonRelease() {
 
 
 void PlayerWindow::onStopButtonRelease() {
-  if (!m_isPlaying) return;
+  if (!m_isPlay) return;
   playback(STATE::STOP);
 }
 
 
-void PlayerWindow::onRecordButtonRelease() {
-//  QString trackTitle = m_ui->trackLabel->text();
-//  if (trackTitle != "Track title") {
-//    QDesktopServices::openUrl(QUrl("https://www.google.ru/search?q=" + trackTitle));
-//  }
-}
+void PlayerWindow::onRecordButtonRelease() {}
 
 
 void PlayerWindow::onSearchButtonRelease() {
@@ -137,26 +149,13 @@ void PlayerWindow::onAddButtonRelease() {
 }
 
 
-void PlayerWindow::onDeleteButtonRelease() {
-
-}
+void PlayerWindow::onDeleteButtonRelease() {}
 
 
-void PlayerWindow::onEditButtonRelease() {
-//  int rowNumber = m_ui->stationsTableWidget->currentRow();
-//  m_ui->stationNameEdit->setText(m_ui->stationsTableWidget->item(rowNumber, 1)->text());
-//  m_ui->stationUrlEdit->setText(m_ui->stationsTableWidget->item(rowNumber, 2)->text());
-//  m_ui->addButton->setDisabled(true);
-//  m_ui->deleteButton->setDisabled(true);
-//  m_ui->editButton->setDisabled(true);
-//  m_ui->saveButton->setDisabled(false);
-}
+void PlayerWindow::onEditButtonRelease() {}
 
 
-void PlayerWindow::onSaveButtonRelease() {
-//  int id = m_ui->stationsTableWidget->item(m_ui->stationsTableWidget->currentRow(), 0)->text().toInt();
-//  updateStation(id, m_ui->stationNameEdit->text(), m_ui->stationUrlEdit->text());
-}
+void PlayerWindow::onSaveButtonRelease() {}
 
 
 void PlayerWindow::onStationRowClick(const QModelIndex &index) {
@@ -182,12 +181,18 @@ void PlayerWindow::onThemeButtonRelease() {
 
 
 void PlayerWindow::onVolumeSliderChange(int value) {
+  (value == 0) ? m_isMuted = true : m_isMuted = false;
+  setTrayIcon();
   m_playerHandler->setVolume(value);
+  if (value != m_volume) {
+    SettingsHandler::getInstance().setSetting("", "volume", value);
+    if (!m_isMuted) m_volume = value;
+  }
 }
 
 
 void PlayerWindow::onRunOnTrayBoxClick(bool checked) {
-  if (checked != m_isRunOnTray) return;
+  if (checked == m_isRunOnTray) return;
   m_isRunOnTray = checked;
   SettingsHandler::getInstance().setSetting("", "run_on_tray", m_isRunOnTray);
 }
@@ -204,7 +209,7 @@ void PlayerWindow::onTrayIconClick(QSystemTrayIcon::ActivationReason r) {
   }
   if (m_isTrayWasClicked) {
     m_isTrayWasClicked = false;
-    if (m_isPlaying) playback(STATE::STOP);
+    if (m_isPlay) playback(STATE::STOP);
     else playback(STATE::PLAY);
   }
 }
@@ -217,26 +222,6 @@ void PlayerWindow::onTrayIconClick(QSystemTrayIcon::ActivationReason r) {
 //}
 
 // private methods ============================================================
-
-// ui -------------------------------------------------------------------------
-
-void PlayerWindow::initUi() {
-  m_ui->setupUi(this);
-
-  // tray icon
-  m_trayIcon = new QSystemTrayIcon(this);
-  m_trayContextMenu = new QMenu("&Menu");
-  m_trayContextMenu->addAction("&Show/Hide", this, SLOT(toggleWindowVisibleAction()));
-  m_trayContextMenu->addAction("&Exit", this, SLOT(exitAction()));
-  m_trayIcon->setContextMenu(m_trayContextMenu);
-
-  // theme color
-  setThemeColor(m_themeColor);
-
-  // playlist view
-  m_ui->stationsTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-}
-
 
 void PlayerWindow::setThemeColor(THEME themeColor) {
   m_themeColor = themeColor;
@@ -252,8 +237,7 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
   }
 
   // tray icon
-  if (m_isPlaying) m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-on.svg"));
-  else m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-off.svg"));
+  setTrayIcon();
 
   // tabs icons
   QIcon icon = QIcon::fromTheme("media-playback-start", QIcon(m_iconsPath + "play.svg"));
@@ -281,6 +265,13 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
   SettingsHandler::getInstance().setSetting("", "theme_color", m_themeColor);
 }
 
+
+void PlayerWindow::setTrayIcon() {
+  if (!m_isPlay) m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-off.svg"));
+  else if (m_isMuted) m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-mute.svg"));
+  else if (m_isPlay) m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-on.svg"));
+}
+
 // playback -------------------------------------------------------------------
 
 void PlayerWindow::playback(STATE state) {
@@ -288,21 +279,22 @@ void PlayerWindow::playback(STATE state) {
     case STATE::PLAY:
     case STATE::FORWARD:
     case STATE::BACKWARD:
+      if (m_playerHandler->isPlaylistEmpty()) break; // dont change state if playlist is empty
       if (state == STATE::PLAY) m_playerHandler->play();
       if (state == STATE::BACKWARD) m_playerHandler->playPrev();
       if (state == STATE::FORWARD) m_playerHandler->playNext();
-      m_isPlaying = true;
+      m_isPlay = true;
       m_ui->playButton->hide();
       m_ui->stopButton->show();
-      m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-on.svg"));
       m_ui->stationsTableView->selectRow(m_playerHandler->getPlaylistIndex());
+      setTrayIcon();
       break;
     case STATE::STOP:
       m_playerHandler->stop();
-      m_isPlaying = false;
+      m_isPlay = false;
       m_ui->stopButton->hide();
       m_ui->playButton->show();
-      m_trayIcon->setIcon(QIcon(m_iconsPath + "tray-off.svg"));
+      setTrayIcon();
     default:
       break;
   }
@@ -344,7 +336,7 @@ void PlayerWindow::playback(STATE state) {
 //  // Стобец на всю ширину таблицы
 //  m_ui->stationsTableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 //  if (currentPlay < countRow) { // !!!!
-//    if (m_isPlaying) {
+//    if (m_isPlay) {
 //      QTableWidgetItem *rowItem = new QTableWidgetItem();
 //      rowItem->setIcon(QIcon::fromTheme("media-playback-start", QIcon(":/icons/icons/16x16/play.svg"));
 //      m_ui->stationsTableWidget->setVerticalHeaderItem(currentPlay, rowItem);
@@ -358,18 +350,11 @@ void PlayerWindow::playback(STATE state) {
 
 
 bool PlayerWindow::addStation(const QString &stationName, const QString &url) {
-//  bool result = m_dataBaseHandler->addRecord(DEFAULT_SETTINGS.stationsTableName, DataRecord(0, stationName, url));
-  m_ui->stationNameEdit->clear();
-  m_ui->stationUrlEdit->clear();
   return false;
 }
 
 
 bool PlayerWindow::deleteStation() {
-//  int id = m_ui->stationsTableWidget->item(m_ui->stationsTableWidget->currentRow(), 0)->text().toInt();
-//  bool result = m_dataBaseHandler->deleteRecordById(DEFAULT_SETTINGS.stationsTableName, id);
-  m_ui->stationNameEdit->clear();
-  m_ui->stationUrlEdit->clear();
   return false;
 }
 
@@ -380,10 +365,5 @@ bool PlayerWindow::editStation() {
 
 
 bool PlayerWindow::saveStation(int id, const QString &stationName, const QString &url) {
-//  bool result = m_dataBaseHandler->updateRecord(DEFAULT_SETTINGS.stationsTableName, DataRecord(id, stationName, url));
-//  m_ui->addButton->setDisabled(false);
-//  m_ui->deleteButton->setDisabled(false);
-//  m_ui->editButton->setDisabled(false);
-//  m_ui->saveStation->setDisabled(true);
   return false;
 }

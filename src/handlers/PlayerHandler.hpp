@@ -32,6 +32,7 @@ public:
 
   int getPlaylistIndex();
   void setPlaylistIndex(int index);
+  bool isPlaylistEmpty();
 
   void play();
   void playPrev();
@@ -62,7 +63,6 @@ private:
   int m_playlistRowsCount = 0;
   int m_currentPlaylistIndex = 0;
 
-  bool isEmpty();
   QUrl getCurrentUrl();
   void addRowToPlaylist(const QString &stationName, const QString &stationUrl);
 

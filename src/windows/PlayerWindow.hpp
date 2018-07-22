@@ -27,6 +27,7 @@ public:
 private slots:
   void toggleWindowVisibleAction();
   void exitAction();
+  void muteAction();
   void onPlayButtonRelease();
   void onStopButtonRelease();
   void onRecordButtonRelease();
@@ -51,17 +52,19 @@ private:
   QSystemTrayIcon *m_trayIcon = nullptr;
   QMenu *m_trayContextMenu = nullptr;
 
-  bool m_isPlaying = false;
+  bool m_isPlay = false;
   bool m_isExit = false;
   bool m_isTrayWasClicked = false;
-
+  bool m_isMuted = false;
+  bool m_isRunOnTray = false;
+  int m_volume = 0;
+  THEME m_themeColor = LIGHT;
   QString m_iconsPath;
-  THEME m_themeColor;
-  bool m_isRunOnTray;
 
-  void initUi();
   void setThemeColor(THEME themeColor);
+  void setTrayIcon();
   void playback(STATE state);
+
   bool addStation(const QString &stationName, const QString &url);
   bool deleteStation();
   bool editStation();

@@ -14,7 +14,7 @@
    id="svg3049"
    version="1.1"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="tray-on.svg"
+   sodipodi:docname="tray-off.svg"
    inkscape:export-filename="/home/uri/.kde/share/icons/NITRUX-KDE/16x16/actions/view-right-new.png"
    inkscape:export-xdpi="30"
    inkscape:export-ydpi="30">
@@ -80,7 +80,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -103,7 +103,7 @@
          inkscape:connector-curvature="0"
          id="rect4148"
          d="m 430.98702,534.88165 c -2.04481,0 -3.63637,1.59646 -3.63637,3.63636 0,2.04482 1.59156,3.63638 3.63637,3.63637 2.04481,0 3.63637,-1.59156 3.63636,-3.63637 -10e-6,-2.0448 -1.59156,-3.63635 -3.63636,-3.63636 z"
-         style="opacity:1;fill:#1d99f3;fill-opacity:1;stroke:none"
+         style="opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:none"
          sodipodi:nodetypes="ccccc" />
     </g>
   </g>

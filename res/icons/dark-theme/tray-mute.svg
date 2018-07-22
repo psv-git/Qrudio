@@ -14,7 +14,7 @@
    id="svg3049"
    version="1.1"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="tray-on.svg"
+   sodipodi:docname="tray-mute.svg"
    inkscape:export-filename="/home/uri/.kde/share/icons/NITRUX-KDE/16x16/actions/view-right-new.png"
    inkscape:export-xdpi="30"
    inkscape:export-ydpi="30">
@@ -28,7 +28,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="28.12"
-     inkscape:cx="8.1362585"
+     inkscape:cx="2.3574534"
      inkscape:cy="11.808967"
      inkscape:document-units="px"
      inkscape:current-layer="g4255"
@@ -96,14 +96,14 @@
          id="path4252"
          transform="translate(421.71429,523.79074)"
          d="M 17.454545,2 C 16.663124,2 16.03042,2.6637055 16,3.4545455 V 6.7272727 H 3.3636364 C 2.4428905,6.7272727 2,7.1378342 2,8.0909091 V 20.636364 C 2,21.55711 2.4428905,22 3.3636364,22 H 20.636364 C 21.55711,22 22,21.557111 22,20.636364 V 8.0909091 C 22,7.1701634 21.537193,6.7272727 20.636364,6.7272727 H 18.909091 V 3.4545455 C 18.909091,2.6631155 18.245974,2 17.454545,2 Z M 9.2727273,9.7272727 c 2.7614097,0 4.9999997,2.2385803 4.9999997,5.0000003 0,2.76142 -2.23859,5 -4.9999997,5 -2.76144,0 -5,-2.23857 -5,-5 0,-2.76142 2.23857,-5.0000003 5,-5.0000003 z"
-         style="opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:none"
+         style="opacity:1;fill:#f2f2f2;fill-opacity:1;stroke:none"
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="scccssssssccsssssss" />
       <path
          inkscape:connector-curvature="0"
          id="rect4148"
          d="m 430.98702,534.88165 c -2.04481,0 -3.63637,1.59646 -3.63637,3.63636 0,2.04482 1.59156,3.63638 3.63637,3.63637 2.04481,0 3.63637,-1.59156 3.63636,-3.63637 -10e-6,-2.0448 -1.59156,-3.63635 -3.63636,-3.63636 z"
-         style="opacity:1;fill:#1d99f3;fill-opacity:1;stroke:none"
+         style="opacity:1;fill:#f2f2f2;fill-opacity:1;stroke:none"
          sodipodi:nodetypes="ccccc" />
     </g>
   </g>

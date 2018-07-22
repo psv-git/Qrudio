@@ -59,6 +59,11 @@ void PlayerHandler::setPlaylistIndex(int index) {
 }
 
 
+bool PlayerHandler::isPlaylistEmpty() {
+  return m_playlistRowsCount == 0;
+}
+
+
 void PlayerHandler::play() {
   if (!m_isPlaying || m_isPlaylistIndexChanged) {
     m_isPlaying = true;
@@ -103,8 +108,9 @@ void PlayerHandler::stop() {
 void PlayerHandler::record() {}
 
 
-void PlayerHandler::setVolume(int volume) {
-  m_player->setVolume(volume);
+void PlayerHandler::setVolume(int value) {
+  m_volume = value;
+  m_player->setVolume(m_volume);
 }
 
 
@@ -129,13 +135,8 @@ void PlayerHandler::setVolume(int volume) {
 
 // private methods ============================================================
 
-bool PlayerHandler::isEmpty() {
-  return m_playlistRowsCount == 0;
-}
-
-
 QUrl PlayerHandler::getCurrentUrl() {
-  if (!isEmpty()) return QUrl(m_playlistModel.item(m_currentPlaylistIndex, 1)->text());
+  if (!isPlaylistEmpty()) return QUrl(m_playlistModel.item(m_currentPlaylistIndex, 1)->text());
   return QUrl();
 }
 
