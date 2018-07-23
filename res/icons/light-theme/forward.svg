@@ -47,8 +47,8 @@
      id="namedview8"
      showgrid="false"
      inkscape:zoom="31.94705"
-     inkscape:cx="9.9296312"
-     inkscape:cy="11.800757"
+     inkscape:cx="8.2236834"
+     inkscape:cy="12.176379"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -57,16 +57,16 @@
      id="g818"
      transform="matrix(-1,0,0,1,24.045902,0)">
     <polygon
-       style=""
-       transform="matrix(1.383305,0,0,1.1136657,-5.5932897,-1.377518)"
+       style="stroke:#000000;stroke-width:1.59414434;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stroke-linejoin:round;stroke-linecap:round"
+       transform="matrix(1.383305,0,0,1.1378546,-5.3394869,-1.6639463)"
        id="polygon2"
-       points="19,20 9,12 19,4 " />
+       points="9,12 19,4 19,20 " />
     <line
-       style=""
+       style="stroke-width:2;stroke-linejoin:round;stroke-linecap:round"
        id="line4"
-       y2="3.1386411"
-       x2="3.1249402"
-       y1="20.856377"
-       x1="3.1249402" />
+       y2="3.0025232"
+       x2="3.0458019"
+       y1="20.97139"
+       x1="3.0458019" />
   </g>
 </svg>

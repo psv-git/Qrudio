@@ -14,6 +14,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
   m_themeColor = qvariant_cast<THEME>(SettingsHandler::getInstance().getSetting("", "theme_color", LIGHT));
   m_isRunOnTray = SettingsHandler::getInstance().getSetting("", "run_on_tray", false).toBool();
   m_volume = SettingsHandler::getInstance().getSetting("", "volume", 0).toInt();
+  if (m_volume < 0 || m_volume > 100) m_volume = 0;
 
   // setup --------------------------------------------------------------------
 
@@ -64,6 +65,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
 
 
 PlayerWindow::~PlayerWindow() {
+  SettingsHandler::getInstance().setSetting("", "volume", m_volume);
   SettingsHandler::getInstance().setSetting("", "is_play", m_isPlay);
   if (m_playerHandler) delete m_playerHandler;
   if (m_trayIcon) delete m_trayIcon;
@@ -74,9 +76,7 @@ PlayerWindow::~PlayerWindow() {
 // public methods =============================================================
 
 void PlayerWindow::run() {
-  if (m_volume < 0 || m_volume > 100) m_volume = 0;
   m_ui->volumeSlider->setValue(m_volume);
-  m_ui->volumeSlider->setMinimum(0); // valueChanged() signal cant emited if (m_volume == slider value), so im set it to -1 from form creator; now, after signal emitted, im set minimal possible slider value back to 0
   if (m_isPlay) playback(STATE::PLAY);
   if (!m_isRunOnTray) this->show();
   m_trayIcon->show();
@@ -150,24 +150,42 @@ void PlayerWindow::onAddButtonRelease() {
 }
 
 
-void PlayerWindow::onDeleteButtonRelease() {}
+void PlayerWindow::onDeleteButtonRelease() {
+  deleteStation(); // !!!!
+  m_ui->editButton->setDisabled(true);
+  m_ui->deleteButton->setDisabled(true);
+}
 
 
-void PlayerWindow::onEditButtonRelease() {}
+void PlayerWindow::onEditButtonRelease() {
+  QModelIndex currentIndex = m_ui->stationsTableView->currentIndex();
+  m_ui->stationNameEdit->setText(m_ui->stationsTableView->model()->data(currentIndex.siblingAtColumn(0)).toString());
+  m_ui->stationUrlEdit->setText(m_ui->stationsTableView->model()->data(currentIndex.siblingAtColumn(1)).toString());
+  m_ui->saveButton->setEnabled(true);
+  m_ui->deleteButton->setDisabled(true);
+}
 
 
-void PlayerWindow::onSaveButtonRelease() {}
+void PlayerWindow::onSaveButtonRelease() {
+  updateStation(m_ui->stationNameEdit->text(), m_ui->stationUrlEdit->text());
+  m_ui->stationNameEdit->clear();
+  m_ui->stationUrlEdit->clear();
+  m_ui->saveButton->setDisabled(true);
+  m_ui->editButton->setDisabled(true);
+}
 
 
 void PlayerWindow::onStationRowClick(const QModelIndex &index) {
   m_playerHandler->setPlaylistIndex(index.row());
-  m_ui->stationNameEdit->setText(m_ui->stationsTableView->model()->data(index.siblingAtColumn(0)).toString());
-  m_ui->stationUrlEdit->setText(m_ui->stationsTableView->model()->data(index.siblingAtColumn(1)).toString());
+  if (m_ui->editTab->isVisible()) {
+    m_ui->editButton->setEnabled(true);
+    m_ui->deleteButton->setEnabled(true);
+  }
 }
 
 
 void PlayerWindow::onStationRowDoubleClick(const QModelIndex &index) {
-  playback(STATE::PLAY); // clicked element index was setted from single click slot
+  playback(STATE::PLAY); // clicked station index was setted from single click slot
 }
 
 
@@ -183,12 +201,9 @@ void PlayerWindow::onThemeButtonRelease() {
 
 void PlayerWindow::onVolumeSliderChange(int value) {
   (value == 0) ? m_isMuted = true : m_isMuted = false;
-  setTrayIcon();
   m_playerHandler->setVolume(value);
-  if (value != m_volume) {
-    SettingsHandler::getInstance().setSetting("", "volume", value);
-    if (!m_isMuted) m_volume = value;
-  }
+  setTrayIcon();
+  if (!m_isMuted && value != m_volume) m_volume = value;
 }
 
 
@@ -238,7 +253,7 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
   }
 
   // tabs icons
-  QIcon icon = QIcon::fromTheme("media-playback-start", QIcon(m_iconsPath + "play.svg"));
+  QIcon icon = QIcon::fromTheme("media-playback-start", QIcon(m_iconsPath + "radio.svg"));
   m_ui->tabWidget->setTabIcon(0, TransformIcon(icon, 22, 22, 90));
   icon = QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit-2.svg"));
   m_ui->tabWidget->setTabIcon(1, TransformIcon(icon, 22, 22, 90));
@@ -252,7 +267,7 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
   m_ui->stopButton->setIcon(QIcon::fromTheme("media-playback-stop", QIcon(m_iconsPath + "stop.svg")));
   m_ui->recordButton->setIcon(QIcon::fromTheme("media-record", QIcon(m_iconsPath + "record.svg")));
   m_ui->searchButton->setIcon(QIcon::fromTheme("search", QIcon(m_iconsPath + "search.svg")));
-  m_ui->addButton->setIcon(QIcon::fromTheme("list-add", QIcon(m_iconsPath + "add-1.svg")));
+  m_ui->addButton->setIcon(QIcon::fromTheme("list-add", QIcon(m_iconsPath + "add.svg")));
   m_ui->deleteButton->setIcon(QIcon::fromTheme("edit-delete", QIcon(m_iconsPath + "delete.svg")));
   m_ui->editButton->setIcon(QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit-1.svg")));
   m_ui->saveButton->setIcon(QIcon::fromTheme("document-save", QIcon(m_iconsPath + "save.svg")));
@@ -347,7 +362,7 @@ void PlayerWindow::playback(STATE state) {
 //}
 
 
-bool PlayerWindow::addStation(const QString &stationName, const QString &url) {
+bool PlayerWindow::addStation(const QString &stationName, const QString &stationUrl) {
   return false;
 }
 
@@ -357,11 +372,6 @@ bool PlayerWindow::deleteStation() {
 }
 
 
-bool PlayerWindow::editStation() {
-  return false;
-}
-
-
-bool PlayerWindow::saveStation(int id, const QString &stationName, const QString &url) {
+bool PlayerWindow::updateStation(const QString &stationName, const QString &stationUrl) {
   return false;
 }

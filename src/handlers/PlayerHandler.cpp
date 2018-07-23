@@ -14,6 +14,7 @@ PlayerHandler::PlayerHandler(QObject *parent) : QObject(parent) {
   }
 
   m_player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback); // PLAYER
+  setVolume(0);
 }
 
 

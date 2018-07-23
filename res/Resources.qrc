@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>icons/dark-theme/add-1.svg</file>
-        <file>icons/dark-theme/add-2.svg</file>
         <file>icons/dark-theme/backward.svg</file>
         <file>icons/dark-theme/delete.svg</file>
         <file>icons/dark-theme/edit-1.svg</file>
@@ -16,8 +15,6 @@
         <file>icons/dark-theme/stop.svg</file>
         <file>icons/dark-theme/tray-off.svg</file>
         <file>icons/dark-theme/tray-on.svg</file>
-        <file>icons/light-theme/add-1.svg</file>
-        <file>icons/light-theme/add-2.svg</file>
         <file>icons/light-theme/backward.svg</file>
         <file>icons/light-theme/delete.svg</file>
         <file>icons/light-theme/edit-1.svg</file>
@@ -36,5 +33,7 @@
         <file>icons/light-theme/qrudio.svg</file>
         <file>icons/light-theme/tray-mute.svg</file>
         <file>icons/dark-theme/tray-mute.svg</file>
+        <file>icons/light-theme/radio.svg</file>
+        <file>icons/light-theme/add.svg</file>
     </qresource>
 </RCC>

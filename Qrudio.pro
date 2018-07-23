@@ -69,41 +69,6 @@ FORMS += \
 DISTFILES += \
     LICENSE \
     README.md \
-    res/icons/dark-theme/add-1.svg \
-    res/icons/dark-theme/add-2.svg \
-    res/icons/dark-theme/backward.svg \
-    res/icons/dark-theme/delete.svg \
-    res/icons/dark-theme/edit-1.svg \
-    res/icons/dark-theme/edit-2.svg \
-    res/icons/dark-theme/forward.svg \
-    res/icons/dark-theme/loading.svg \
-    res/icons/dark-theme/play.svg \
-    res/icons/dark-theme/qrudio.svg \
-    res/icons/dark-theme/record.svg \
-    res/icons/dark-theme/save.svg \
-    res/icons/dark-theme/search.svg \
-    res/icons/dark-theme/settings.svg \
-    res/icons/dark-theme/stop.svg \
-    res/icons/dark-theme/tray-off.svg \
-    res/icons/dark-theme/tray-on.svg \
-    res/icons/light-theme/add-1.svg \
-    res/icons/light-theme/add-2.svg \
-    res/icons/light-theme/backward.svg \
-    res/icons/light-theme/delete.svg \
-    res/icons/light-theme/edit-1.svg \
-    res/icons/light-theme/edit-2.svg \
-    res/icons/light-theme/forward.svg \
-    res/icons/light-theme/loading.svg \
-    res/icons/light-theme/play.svg \
-    res/icons/light-theme/qrudio.svg \
-    res/icons/light-theme/record.svg \
-    res/icons/light-theme/save.svg \
-    res/icons/light-theme/search.svg \
-    res/icons/light-theme/settings.svg \
-    res/icons/light-theme/stop.svg \
-    res/icons/light-theme/tray-off.svg \
-    res/icons/light-theme/tray-on.svg \
-    res/icons/qrudio.ico
 
 
 RESOURCES += \

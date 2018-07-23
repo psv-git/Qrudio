@@ -28,7 +28,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -48,14 +48,15 @@
      id="namedview6"
      showgrid="false"
      inkscape:zoom="31.94705"
-     inkscape:cx="11.583394"
-     inkscape:cy="12.078216"
+     inkscape:cx="8.0306403"
+     inkscape:cy="12.109518"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg4" />
   <polygon
-     points="5,3 19,12 5,21 "
+     points="5,21 5,3 19,12 "
      id="polygon2"
-     transform="matrix(1.2500461,0,0,0.99999733,-3.0004993,-1.0954272e-4)" />
+     transform="matrix(1.2688559,0,0,1.0118662,-3.2262235,-0.1435256)"
+     style="stroke:#000000;stroke-width:1.76507139;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
 </svg>

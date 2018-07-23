@@ -351,7 +351,7 @@ QPushButton:disabled {
        <locale language="English" country="UnitedStates"/>
       </property>
       <property name="minimum">
-       <number>-1</number>
+       <number>0</number>
       </property>
       <property name="maximum">
        <number>100</number>
@@ -361,12 +361,6 @@ QPushButton:disabled {
       </property>
       <property name="pageStep">
        <number>1</number>
-      </property>
-      <property name="value">
-       <number>-1</number>
-      </property>
-      <property name="sliderPosition">
-       <number>-1</number>
       </property>
       <property name="tracking">
        <bool>true</bool>
@@ -393,12 +387,16 @@ QPushButton:disabled {
       <property name="font">
        <font>
         <family>Liberation Sans</family>
-        <pointsize>10</pointsize>
-        <kerning>false</kerning>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QLabel {
+	font: 12pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(0, 0, 0, 0);
 }
 </string>
@@ -569,6 +567,10 @@ QPushButton:disabled {
       <property name="font">
        <font>
         <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="autoFillBackground">
@@ -576,6 +578,8 @@ QPushButton:disabled {
       </property>
       <property name="styleSheet">
        <string notr="true">QLabel {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(0, 0, 0, 0);
 }
 </string>
@@ -623,10 +627,16 @@ QPushButton:disabled {
       <property name="font">
        <font>
         <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QLabel {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(0, 0, 0, 0);
 }
 </string>
@@ -825,7 +835,7 @@ QPushButton:disabled {
      <zorder>bitrateValueLabel</zorder>
      <zorder>searchButton</zorder>
     </widget>
-    <widget class="QWidget" name="stationTab">
+    <widget class="QWidget" name="editTab">
      <property name="styleSheet">
       <string notr="true">QWidget {
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 240, 240, 255), stop:1 rgba(255, 255, 255, 255));
@@ -836,6 +846,9 @@ QPushButton:disabled {
       <string notr="true"/>
      </attribute>
      <widget class="QLineEdit" name="stationNameEdit">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -847,12 +860,17 @@ QPushButton:disabled {
       <property name="font">
        <font>
         <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QLineEdit {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(255, 255, 255, 255);
-	
 	border: 1px solid  rgba(0, 0, 0, 150);
 	border-radius: 2px;
 }
@@ -874,10 +892,16 @@ QPushButton:disabled {
       <property name="font">
        <font>
         <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QLabel {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(0, 0, 0, 0);
 }
 </string>
@@ -887,6 +911,9 @@ QPushButton:disabled {
       </property>
      </widget>
      <widget class="QLineEdit" name="stationUrlEdit">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -898,12 +925,17 @@ QPushButton:disabled {
       <property name="font">
        <font>
         <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QLineEdit {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(255, 255, 255, 255);
-	
 	border: 1px solid  rgba(0, 0, 0, 150);
 	border-radius: 2px;
 }
@@ -922,10 +954,16 @@ QPushButton:disabled {
       <property name="font">
        <font>
         <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QLabel {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(0, 0, 0, 0);
 }
 </string>
@@ -1124,17 +1162,23 @@ QPushButton:disabled {
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>70</width>
+        <width>80</width>
         <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QLabel {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(0, 0, 0, 0);
 }
 </string>
@@ -1146,19 +1190,25 @@ QPushButton:disabled {
      <widget class="QRadioButton" name="lightThemeRadioButton">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>12</y>
-        <width>50</width>
+        <x>100</x>
+        <y>10</y>
+        <width>60</width>
         <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QRadioButton {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(0, 0, 0, 0);
 }
 </string>
@@ -1170,19 +1220,25 @@ QPushButton:disabled {
      <widget class="QRadioButton" name="darkThemeRadioButton">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>12</y>
-        <width>50</width>
+        <x>170</x>
+        <y>10</y>
+        <width>60</width>
         <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QRadioButton {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(0, 0, 0, 0);
 }
 </string>
@@ -1202,17 +1258,23 @@ QPushButton:disabled {
        <rect>
         <x>10</x>
         <y>55</y>
-        <width>70</width>
+        <width>80</width>
         <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QLabel {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(0, 0, 0, 0);
 }
 </string>
@@ -1224,7 +1286,7 @@ QPushButton:disabled {
      <widget class="QCheckBox" name="runOnTrayCheckBox">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>100</x>
         <y>60</y>
         <width>22</width>
         <height>22</height>
@@ -1260,11 +1322,15 @@ QPushButton:disabled {
      <font>
       <family>Liberation Sans</family>
       <pointsize>10</pointsize>
-      <kerning>false</kerning>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">QTableView {
+	font: 10pt &quot;Liberation Sans&quot;;
+	color: rgba(0, 0, 0, 255);
 	background-color: rgba(255, 255, 255, 255);
 }</string>
     </property>

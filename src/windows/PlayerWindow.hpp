@@ -47,14 +47,13 @@ private slots:
 private:
   Ui::PlayerWindow *m_ui = nullptr;
   PlayerHandler *m_playerHandler = nullptr;
-
   QSystemTrayIcon *m_trayIcon = nullptr;
   QMenu *m_trayContextMenu = nullptr;
 
   bool m_isPlay = false;
   bool m_isExit = false;
   bool m_isTrayWasClicked = false;
-  bool m_isMuted = false;
+  bool m_isMuted = true;
   bool m_isRunOnTray = false;
   int m_volume = 0;
   THEME m_themeColor = LIGHT;
@@ -64,10 +63,9 @@ private:
   void setTrayIcon();
   void playback(STATE state);
 
-  bool addStation(const QString &stationName, const QString &url);
+  bool addStation(const QString &stationName, const QString &stationUrl);
   bool deleteStation();
-  bool editStation();
-  bool saveStation(int id, const QString &stationName, const QString &url);
+  bool updateStation(const QString &stationName, const QString &stationUrl);
 
 };
 
