@@ -66,6 +66,11 @@
       <height>150</height>
      </size>
     </property>
+    <property name="font">
+     <font>
+      <family>Liberation Sans</family>
+     </font>
+    </property>
     <property name="mouseTracking">
      <bool>false</bool>
     </property>
@@ -80,17 +85,17 @@
     </property>
     <property name="styleSheet">
      <string notr="true">QTabWidget:pane {
-    border-top: 1px solid  rgb(20, 20, 20);
+    border-top: 1px solid  rgba(0, 0, 0, 150);
 }
 
 QTabBar:tab {
 	width: 30px;
 	height: 50px;
-
-	background-color: rgb(200, 200, 200);
 	
-	border-top: 1px solid  rgb(20, 20, 20);
-	border-right: 1px solid  rgb(20, 20, 20);
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(220, 220, 220, 255), stop:1 rgba(240, 240, 240, 255));
+	
+	border-top: 1px solid  rgba(0, 0, 0, 150);
+	border-right: 1px solid  rgba(0, 0, 0, 150);
 
 	margin: 0px;
 	padding-top: -15px;
@@ -98,7 +103,7 @@ QTabBar:tab {
 }
 
 QTabBar:tab:selected {
-    background-color: rgb(190, 190, 190);
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 255), stop:1 rgba(240, 240, 240, 255));
 }
 </string>
     </property>
@@ -136,9 +141,14 @@ QTabBar:tab:selected {
      <bool>false</bool>
     </property>
     <widget class="QWidget" name="playTab">
+     <property name="font">
+      <font>
+       <family>Liberation Sans</family>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">QWidget {
-	background-color: rgb(240, 240, 240);
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 240, 240, 255), stop:1 rgba(255, 255, 255, 255));
 }
 </string>
      </property>
@@ -169,23 +179,29 @@ QTabBar:tab:selected {
         <height>30</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
-	font: 75 12pt &quot;Liberation Sans&quot;;
-	color: rgb(255, 255, 255);
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
 
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
-
-	border: 1px solid  rgb(0, 0, 0);
+	border: 1px solid  rgba(0, 0, 0, 150);
 	border-radius: 2px;
 }
 
 QPushButton:hover {
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
 }
 
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
 QPushButton:disabled {
-	background-color: rgb(220, 220, 220);
+	background-color: rgba(230, 230, 230, 255);
 }
 </string>
       </property>
@@ -220,20 +236,24 @@ QPushButton:disabled {
       <property name="styleSheet">
        <string notr="true">QPushButton {
 	font: 75 12pt &quot;Liberation Sans&quot;;
-	color: rgb(255, 255, 255);
+	color: rgba(0, 0, 0, 255);
 
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
 
-	border: 1px solid  rgb(0, 0, 0);
+	border: 1px solid  rgba(0, 0, 0, 150);
 	border-radius: 2px;
 }
 
 QPushButton:hover {
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
 }
 
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
 QPushButton:disabled {
-	background-color: rgb(220, 220, 220);
+	background-color: rgba(230, 230, 230, 255);
 }
 </string>
       </property>
@@ -268,23 +288,29 @@ QPushButton:disabled {
         <height>30</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
-	font: 75 12pt &quot;Liberation Sans&quot;;
-	color: rgb(255, 255, 255);
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
 
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
-
-	border: 1px solid  rgb(0, 0, 0);
+	border: 1px solid  rgba(0, 0, 0, 150);
 	border-radius: 2px;
 }
 
 QPushButton:hover {
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
 }
 
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
 QPushButton:disabled {
-	background-color: rgb(220, 220, 220);
+	background-color: rgba(230, 230, 230, 255);
 }
 </string>
       </property>
@@ -304,8 +330,22 @@ QPushButton:disabled {
         <height>20</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QSlider {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
       </property>
       <property name="locale">
        <locale language="English" country="UnitedStates"/>
@@ -349,6 +389,19 @@ QPushButton:disabled {
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+        <pointsize>10</pointsize>
+        <kerning>false</kerning>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
       </property>
       <property name="locale">
        <locale language="English" country="UnitedStates"/>
@@ -399,23 +452,29 @@ QPushButton:disabled {
         <height>30</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
-	font: 75 12pt &quot;Liberation Sans&quot;;
-	color: rgb(255, 255, 255);
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
 
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
-
-	border: 1px solid  rgb(0, 0, 0);
+	border: 1px solid  rgba(0, 0, 0, 150);
 	border-radius: 2px;
 }
 
 QPushButton:hover {
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
 }
 
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
 QPushButton:disabled {
-	background-color: rgb(220, 220, 220);
+	background-color: rgba(230, 230, 230, 255);
 }
 </string>
       </property>
@@ -436,6 +495,9 @@ QPushButton:disabled {
       </property>
      </widget>
      <widget class="QPushButton" name="recordButton">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>170</x>
@@ -456,23 +518,29 @@ QPushButton:disabled {
         <height>30</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
-	font: 75 12pt &quot;Liberation Sans&quot;;
-	color: rgb(255, 255, 255);
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
 
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
-
-	border: 1px solid  rgb(0, 0, 0);
+	border: 1px solid  rgba(0, 0, 0, 150);
 	border-radius: 2px;
 }
 
 QPushButton:hover {
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
 }
 
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
 QPushButton:disabled {
-	background-color: rgb(220, 220, 220);
+	background-color: rgba(230, 230, 230, 255);
 }
 </string>
       </property>
@@ -497,6 +565,20 @@ QPushButton:disabled {
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
       </property>
       <property name="locale">
        <locale language="English" country="UnitedStates"/>
@@ -538,6 +620,17 @@ QPushButton:disabled {
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
+      </property>
       <property name="locale">
        <locale language="English" country="UnitedStates"/>
       </property>
@@ -578,6 +671,17 @@ QPushButton:disabled {
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
+      </property>
       <property name="locale">
        <locale language="English" country="UnitedStates"/>
       </property>
@@ -617,6 +721,17 @@ QPushButton:disabled {
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
       </property>
       <property name="locale">
        <locale language="English" country="UnitedStates"/>
@@ -664,23 +779,29 @@ QPushButton:disabled {
         <height>30</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
-	font: 75 12pt &quot;Liberation Sans&quot;;
-	color: rgb(255, 255, 255);
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
 
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(250,250, 250), stop: 1 rgb(180, 180, 180));
-
-	border: 1px solid  rgb(0, 0, 0);
+	border: 1px solid  rgba(0, 0, 0, 150);
 	border-radius: 2px;
 }
 
 QPushButton:hover {
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.67,  stop: 0 rgb(230,230, 230), stop: 1 rgb(160, 160, 160));
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
 }
 
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
 QPushButton:disabled {
-	background-color: rgb(220, 220, 220);
+	background-color: rgba(230, 230, 230, 255);
 }
 </string>
       </property>
@@ -707,7 +828,7 @@ QPushButton:disabled {
     <widget class="QWidget" name="stationTab">
      <property name="styleSheet">
       <string notr="true">QWidget {
-	background-color: rgb(240, 240, 240);
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 240, 240, 255), stop:1 rgba(255, 255, 255, 255));
 }
 </string>
      </property>
@@ -723,6 +844,20 @@ QPushButton:disabled {
         <height>25</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+	background-color: rgba(255, 255, 255, 255);
+	
+	border: 1px solid  rgba(0, 0, 0, 150);
+	border-radius: 2px;
+}
+</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -735,6 +870,17 @@ QPushButton:disabled {
         <width>245</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
       </property>
       <property name="text">
        <string comment="The name of the station">Station name:</string>
@@ -749,6 +895,20 @@ QPushButton:disabled {
         <height>25</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+	background-color: rgba(255, 255, 255, 255);
+	
+	border: 1px solid  rgba(0, 0, 0, 150);
+	border-radius: 2px;
+}
+</string>
+      </property>
      </widget>
      <widget class="QLabel" name="stationUrlLabel">
       <property name="geometry">
@@ -758,6 +918,17 @@ QPushButton:disabled {
         <width>245</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
       </property>
       <property name="text">
        <string>Station url:</string>
@@ -774,6 +945,32 @@ QPushButton:disabled {
         <width>50</width>
         <height>25</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
+
+	border: 1px solid  rgba(0, 0, 0, 150);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
+}
+
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
+QPushButton:disabled {
+	background-color: rgba(230, 230, 230, 255);
+}
+</string>
       </property>
       <property name="text">
        <string/>
@@ -797,6 +994,32 @@ QPushButton:disabled {
         <height>25</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
+
+	border: 1px solid  rgba(0, 0, 0, 150);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
+}
+
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
+QPushButton:disabled {
+	background-color: rgba(230, 230, 230, 255);
+}
+</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -812,6 +1035,32 @@ QPushButton:disabled {
         <width>50</width>
         <height>25</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
+
+	border: 1px solid  rgba(0, 0, 0, 150);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
+}
+
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
+QPushButton:disabled {
+	background-color: rgba(230, 230, 230, 255);
+}
+</string>
       </property>
       <property name="text">
        <string/>
@@ -829,6 +1078,32 @@ QPushButton:disabled {
         <height>25</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
+
+	border: 1px solid  rgba(0, 0, 0, 150);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
+}
+
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
+QPushButton:disabled {
+	background-color: rgba(230, 230, 230, 255);
+}
+</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -837,7 +1112,7 @@ QPushButton:disabled {
     <widget class="QWidget" name="settingsTab">
      <property name="styleSheet">
       <string notr="true">QWidget {
-	background-color: rgb(240, 240, 240);
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 240, 240, 255), stop:1 rgba(255, 255, 255, 255));
 }
 </string>
      </property>
@@ -853,6 +1128,17 @@ QPushButton:disabled {
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
+      </property>
       <property name="text">
        <string comment="The theme of the icons">Color theme:</string>
       </property>
@@ -866,6 +1152,17 @@ QPushButton:disabled {
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QRadioButton {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
+      </property>
       <property name="text">
        <string comment="Light">Light</string>
       </property>
@@ -878,6 +1175,17 @@ QPushButton:disabled {
         <width>50</width>
         <height>30</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QRadioButton {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
       </property>
       <property name="text">
        <string comment="Dark">Dark</string>
@@ -898,6 +1206,17 @@ QPushButton:disabled {
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
+      </property>
       <property name="text">
        <string comment="The theme of the icons">Run on tray:</string>
       </property>
@@ -910,6 +1229,17 @@ QPushButton:disabled {
         <width>22</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QCheckBox {
+	background-color: rgba(0, 0, 0, 0);
+}
+</string>
       </property>
       <property name="text">
        <string/>
@@ -925,6 +1255,18 @@ QPushButton:disabled {
       <width>300</width>
       <height>180</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Liberation Sans</family>
+      <pointsize>10</pointsize>
+      <kerning>false</kerning>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableView {
+	background-color: rgba(255, 255, 255, 255);
+}</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
