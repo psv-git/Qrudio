@@ -5,7 +5,6 @@
 #define PLAYERHANDLER_HPP
 
 #include <QStandardItemModel>
-
 #include "GlobalClasses.hpp"
 #include "DataBaseHandler.hpp"
 #include "TrackMetaData.hpp"
@@ -25,9 +24,9 @@ public:
   explicit PlayerHandler(QObject *parent = nullptr);
   ~PlayerHandler();
 
-  void addStation(const QString &stationName, const QString &stationUrl);
-  void updateStation(const QModelIndex &index);
+  void addStation(const DataRecord &dataRecord);
   void deleteStation(const QModelIndex &index);
+  void updateStation(const QModelIndex &index);
   QStandardItemModel* getPlaylistModel();
 
   int getPlaylistIndex();
@@ -41,18 +40,8 @@ public:
   void record();
   void setVolume(int volume);
 
-signals:
-//  void trackMetaDataChanged(TrackMetaData *trackMetaData);
-
-public slots:
-//  void onTrackMetaDataChange();
-
 private:
   DataBaseHandler *m_dataBaseHandler = nullptr; // must be instantiate in runtime
-
-//  QNetworkAccessManager m_webManager;
-//  QByteArray m_downloadedData;
-//  TrackMetaData m_trackMetaData;
   QMediaPlayer *m_player = nullptr;
 
   bool m_isPlaying = false;
@@ -63,8 +52,7 @@ private:
   int m_playlistRowsCount = 0;
   int m_currentPlaylistIndex = 0;
 
-  QUrl getCurrentUrl();
-  void addRowToPlaylist(const QString &stationName, const QString &stationUrl);
+  void addRowToPlaylist(const DataRecord &dataRecord);
 
 };
 

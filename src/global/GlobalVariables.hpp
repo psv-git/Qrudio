@@ -7,8 +7,9 @@
 #include "headers.hpp"
 
 
-enum class STATE : int { NONE, PLAY, BACKWARD, FORWARD, STOP, SEARCH, ADD, DELETE, EDIT, SAVE };
-enum THEME : int { LIGHT = 1, DARK = 2 };
+enum class PLAYBACK : int { NONE, PLAY, BACKWARD, FORWARD, STOP };
+enum class EDIT : int { NONE, ADD, EDIT, DELETE };
+enum THEME : int { NONE = 0, LIGHT = 1, DARK = 2 };
 Q_DECLARE_METATYPE(THEME) // for enable qvariant_cast<THEME>
 
 struct DefaultSettings {
@@ -16,14 +17,12 @@ struct DefaultSettings {
   QString dataBasePath;
   QString configFilePath;
   QString logFilePath;
-  QString settingsTableName;
   QString stationsTableName;
 } const DEFAULT_SETTINGS {
   ".qrudio",
   "/.qrudio/db.sqlite",
   "/.qrudio/config.ini",
   "/.qrudio/log.txt",
-  "settings",
   "stations"
 };
 

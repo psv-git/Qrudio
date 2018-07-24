@@ -6,37 +6,42 @@
 
 PlayerHandler::PlayerHandler(QObject *parent) : QObject(parent) {
   m_dataBaseHandler = new DataBaseHandler();
-
   // get stations from database
   QVector<DataRecord*>* recordsList = m_dataBaseHandler->getRecordsList(DEFAULT_SETTINGS.stationsTableName);
   for (auto it = recordsList->begin(); it != recordsList->end(); it++) {
-    if ((*it)->isValid()) addRowToPlaylist((*it)->getField(), (*it)->getValue().toString());
+    if ((*it)->isValid()) addRowToPlaylist(**it);
   }
-
-  m_player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback); // PLAYER
+  m_player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
   setVolume(0);
 }
 
 
 PlayerHandler::~PlayerHandler() {
   if (m_dataBaseHandler) delete m_dataBaseHandler;
-  if (m_player) delete m_player; // PLAYER
+  if (m_player) delete m_player;
 }
 
 // public methods =============================================================
 
-void PlayerHandler::addStation(const QString &stationName, const QString &stationUrl) {
-  addRowToPlaylist(stationName, stationUrl);
-  m_dataBaseHandler->addRecord(DEFAULT_SETTINGS.stationsTableName, DataRecord(stationName, stationUrl));
-}
-
-
-void PlayerHandler::updateStation(const QModelIndex &index) {
-//  m_playlistModel.itemFromIndex(index)->child(0, 0)->text(); // get station name
+void PlayerHandler::addStation(const DataRecord &dataRecord) {
+  if (!dataRecord.isValid()) return;
+  if (m_dataBaseHandler->addRecord(DEFAULT_SETTINGS.stationsTableName, dataRecord)) {
+    addRowToPlaylist(dataRecord);
+  }
 }
 
 
 void PlayerHandler::deleteStation(const QModelIndex &index) {
+  QString field = m_playlistModel.itemFromIndex(index.siblingAtColumn(0))->text();
+  if (m_dataBaseHandler->deleteRecord(DEFAULT_SETTINGS.stationsTableName, DataRecord(field, ""))) {
+    m_playlistModel.removeRow(index.row());
+    m_playlistRowsCount--;
+    m_currentPlaylistIndex--;
+  }
+}
+
+
+void PlayerHandler::updateStation(const QModelIndex &index) {
 //  m_playlistModel.itemFromIndex(index)->child(0, 0)->text(); // get station name
 }
 
@@ -61,16 +66,17 @@ void PlayerHandler::setPlaylistIndex(int index) {
 
 
 bool PlayerHandler::isPlaylistEmpty() {
-  return m_playlistRowsCount == 0;
+  return m_playlistRowsCount < 1;
 }
 
+// playback -------------------------------------------------------------------
 
 void PlayerHandler::play() {
   if (!m_isPlaying || m_isPlaylistIndexChanged) {
-    m_isPlaying = true;
-    m_isPlaylistIndexChanged = false;
-    QUrl url = getCurrentUrl();
-    if (!url.isEmpty()) {
+    if (!isPlaylistEmpty()) {
+      m_isPlaying = true;
+      m_isPlaylistIndexChanged = false;
+      QUrl url(m_playlistModel.item(m_currentPlaylistIndex, 1)->text());
       m_player->setMedia(QMediaContent(url));
       m_player->play();
     }
@@ -81,9 +87,7 @@ void PlayerHandler::play() {
 void PlayerHandler::playPrev() {
   m_isPlaying = false;
   m_currentPlaylistIndex--;
-  if (m_currentPlaylistIndex < 0) {
-    m_currentPlaylistIndex = m_playlistRowsCount - 1;
-  }
+  if (m_currentPlaylistIndex < 0) m_currentPlaylistIndex = m_playlistRowsCount - 1;
   play();
 }
 
@@ -91,9 +95,7 @@ void PlayerHandler::playPrev() {
 void PlayerHandler::playNext() {
   m_isPlaying = false;
   m_currentPlaylistIndex++;
-  if (m_currentPlaylistIndex == m_playlistRowsCount) {
-    m_currentPlaylistIndex = 0;
-  }
+  if (m_currentPlaylistIndex == m_playlistRowsCount) m_currentPlaylistIndex = 0;
   play();
 }
 
@@ -114,36 +116,10 @@ void PlayerHandler::setVolume(int value) {
   m_player->setVolume(m_volume);
 }
 
-
-//void PlayerHandlerHandler::onTrackMetaDataChange() {
-//  m_trackMetaData.trackTitle = "unknown";
-//  m_trackMetaData.sample = 0;
-//  m_trackMetaData.bitrate = 0;
-
-//  if (m_PlayerHandler->isMetaDataAvailable()) {
-//    QString trackTitle = m_PlayerHandler->metaData(QMediaMetaData::Title).toString();
-//    int sample = m_PlayerHandler->metaData(QMediaMetaData::SampleRate).toInt();
-//    int bitrate = m_PlayerHandler->metaData(QMediaMetaData::AudioBitRate).toInt();
-
-//    if (!trackTitle.isEmpty()) m_trackMetaData.trackTitle = trackTitle;
-//    if (sample != 0) m_trackMetaData.sample = sample;
-//    if (bitrate != 0) m_trackMetaData.bitrate = bitrate;
-
-//    qDebug() << "md ";
-//  }
-//  emit trackMetaDataChanged(&m_trackMetaData);
-//}
-
 // private methods ============================================================
 
-QUrl PlayerHandler::getCurrentUrl() {
-  if (!isPlaylistEmpty()) return QUrl(m_playlistModel.item(m_currentPlaylistIndex, 1)->text());
-  return QUrl();
-}
-
-
-void PlayerHandler::addRowToPlaylist(const QString &stationName, const QString &stationUrl) {
-  QList<QStandardItem*> row = { new QStandardItem(stationName), new QStandardItem(stationUrl) };
+void PlayerHandler::addRowToPlaylist(const DataRecord &dataRecord) {
+  QList<QStandardItem*> row = { new QStandardItem(dataRecord.getField()), new QStandardItem(dataRecord.getValue().toString()) };
   m_playlistModel.appendRow(row);
   m_playlistRowsCount++;
 }

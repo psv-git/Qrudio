@@ -14,8 +14,6 @@ public:
   DataRecord(const QString &field, const QVariant &value);
   ~DataRecord();
 
-  friend bool operator == (const DataRecord& dr1, const DataRecord& dr2);
-
   bool isValid() const;
 
   const QString getField() const;

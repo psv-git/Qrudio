@@ -16,8 +16,8 @@ public:
   ~DataBaseHandler();
 
   bool addRecord(const QString &tableName, const DataRecord &record);
-  bool updateRecord(const QString &tableName, const DataRecord &record);
   bool deleteRecord(const QString &tableName, const DataRecord &record);
+  bool updateRecord(const QString &tableName, const DataRecord &record);
   QVector<DataRecord*>* getRecordsList(const QString &tableName);
 
 private:

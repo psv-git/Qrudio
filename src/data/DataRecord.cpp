@@ -7,27 +7,24 @@
 DataRecord::DataRecord() {}
 
 
-DataRecord::DataRecord(const QString &field, const QVariant &value) :
-m_isValid(true),
-m_field(field),
-m_value(value) {}
+DataRecord::DataRecord(const QString &field, const QVariant &value) {
+  m_field = field;
+  m_value = value;
+  if (!m_field.isEmpty() && !m_value.toString().isEmpty()) {
+    // TODO: check url on valid
+    m_isValid = true;
+  }
+}
 
 
 DataRecord::~DataRecord() {}
 
 // ============================================================================
 
-bool operator == (const DataRecord& dr1, const DataRecord& dr2) {
-  if (dr1.m_field != dr2.m_field) return false;
-  return true;
-}
-
-
 bool DataRecord::isValid() const {
   return m_isValid;
 }
 
-// getters/setters ============================================================
 
 const QString DataRecord::getField() const {
   return m_field;

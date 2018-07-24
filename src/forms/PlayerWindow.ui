@@ -324,9 +324,9 @@ QPushButton:disabled {
      <widget class="QSlider" name="volumeSlider">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>80</y>
-        <width>230</width>
+        <width>250</width>
         <height>20</height>
        </rect>
       </property>
@@ -372,10 +372,10 @@ QPushButton:disabled {
      <widget class="QLabel" name="trackLabel">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>15</y>
-        <width>230</width>
-        <height>20</height>
+        <x>10</x>
+        <y>10</y>
+        <width>250</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -552,9 +552,9 @@ QPushButton:disabled {
      <widget class="QLabel" name="sampleTitleLabel">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>45</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -612,9 +612,9 @@ QPushButton:disabled {
      <widget class="QLabel" name="bitrateTitleLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>140</x>
         <y>45</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -671,7 +671,7 @@ QPushButton:disabled {
        <rect>
         <x>70</x>
         <y>45</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -722,7 +722,7 @@ QPushButton:disabled {
        <rect>
         <x>200</x>
         <y>45</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -852,9 +852,9 @@ QPushButton:disabled {
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>25</y>
-        <width>245</width>
-        <height>25</height>
+        <y>10</y>
+        <width>250</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -874,40 +874,17 @@ QPushButton:disabled {
 	border: 1px solid  rgba(0, 0, 0, 150);
 	border-radius: 2px;
 }
+
+QLineEdit::disabled {
+	background-color: rgba(230, 230, 230, 255);
+}
 </string>
       </property>
       <property name="text">
        <string/>
       </property>
-     </widget>
-     <widget class="QLabel" name="stationNameLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>5</y>
-        <width>245</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Liberation Sans</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QLabel {
-	font: 10pt &quot;Liberation Sans&quot;;
-	color: rgba(0, 0, 0, 255);
-	background-color: rgba(0, 0, 0, 0);
-}
-</string>
-      </property>
-      <property name="text">
-       <string comment="The name of the station">Station name:</string>
+      <property name="placeholderText">
+       <string>Station name</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="stationUrlEdit">
@@ -917,9 +894,9 @@ QPushButton:disabled {
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>75</y>
-        <width>245</width>
-        <height>25</height>
+        <y>50</y>
+        <width>250</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -939,49 +916,26 @@ QPushButton:disabled {
 	border: 1px solid  rgba(0, 0, 0, 150);
 	border-radius: 2px;
 }
-</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="stationUrlLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>55</y>
-        <width>245</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Liberation Sans</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QLabel {
-	font: 10pt &quot;Liberation Sans&quot;;
-	color: rgba(0, 0, 0, 255);
-	background-color: rgba(0, 0, 0, 0);
+
+QLineEdit::disabled {
+	background-color: rgba(230, 230, 230, 255);
 }
 </string>
       </property>
-      <property name="text">
-       <string>Station url:</string>
+      <property name="placeholderText">
+       <string>Station url</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="addButton">
+     <widget class="QPushButton" name="addStationButton">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>115</y>
-        <width>50</width>
-        <height>25</height>
+        <x>60</x>
+        <y>110</y>
+        <width>40</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -1020,16 +974,16 @@ QPushButton:disabled {
        </size>
       </property>
      </widget>
-     <widget class="QPushButton" name="deleteButton">
+     <widget class="QPushButton" name="deleteStationButton">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>70</x>
-        <y>115</y>
-        <width>50</width>
-        <height>25</height>
+        <x>160</x>
+        <y>110</y>
+        <width>40</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -1062,16 +1016,16 @@ QPushButton:disabled {
        <string/>
       </property>
      </widget>
-     <widget class="QPushButton" name="saveButton">
+     <widget class="QPushButton" name="saveStationButton">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>205</x>
-        <y>115</y>
-        <width>50</width>
-        <height>25</height>
+        <x>220</x>
+        <y>110</y>
+        <width>40</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -1104,16 +1058,16 @@ QPushButton:disabled {
        <string/>
       </property>
      </widget>
-     <widget class="QPushButton" name="editButton">
+     <widget class="QPushButton" name="editStationButton">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>145</x>
-        <y>115</y>
-        <width>50</width>
-        <height>25</height>
+        <x>110</x>
+        <y>110</y>
+        <width>40</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -1144,6 +1098,54 @@ QPushButton:disabled {
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addPlaylistButton">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>40</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Liberation Sans</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
+
+	border: 1px solid  rgba(0, 0, 0, 150);
+	border-radius: 2px;
+}
+
+QPushButton:hover {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(255,255, 255, 255), stop: 1 rgba(220, 220, 220, 255));
+}
+
+QPushButton:pressed {
+     background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.9, fx:0.5, fy:0.5, stop:0 rgba(250, 250, 250, 255), stop:0.1 rgba(245, 245, 245, 255), stop:0.2 rgba(240, 240, 240, 255), stop:0.3 rgba(235, 235, 235, 255), stop:0.4 rgba(230, 230, 230, 255), stop:0.5 rgba(225, 225, 225, 255), stop:0.6 rgba(220, 220, 220, 255), stop:1 rgba(215, 215, 215, 255));
+ }
+
+QPushButton:disabled {
+	background-color: rgba(230, 230, 230, 255);
+}
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
       </property>
      </widget>
     </widget>

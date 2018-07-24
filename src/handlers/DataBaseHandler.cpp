@@ -39,20 +39,20 @@ bool DataBaseHandler::addRecord(const QString &tableName, const DataRecord &reco
 }
 
 
-bool DataBaseHandler::updateRecord(const QString &tableName, const DataRecord &record) {
+bool DataBaseHandler::deleteRecord(const QString &tableName, const DataRecord &record) {
   if (!record.isValid()) false;
-  if (!sendQuery(QString("UPDATE %1 SET value = '%3' WHERE field = '%2';").arg(tableName).arg(record.getField()).arg(record.getValue().toString()))) {
-    ErrorHandler::getInstance().addErrorMessage("Can't update data in the table.");
+  if (!sendQuery(QString("DELETE FROM %1 WHERE field = '%2';").arg(tableName).arg(record.getField()))) {
+    ErrorHandler::getInstance().addErrorMessage("Can't delete data from the table.");
     return false;
   }
   return true;
 }
 
 
-bool DataBaseHandler::deleteRecord(const QString &tableName, const DataRecord &record) {
+bool DataBaseHandler::updateRecord(const QString &tableName, const DataRecord &record) {
   if (!record.isValid()) false;
-  if (!sendQuery(QString("DELETE FROM %1 WHERE field = '%2';").arg(tableName).arg(record.getField()))) {
-    ErrorHandler::getInstance().addErrorMessage("Can't delete data from the table.");
+  if (!sendQuery(QString("UPDATE %1 SET value = '%3' WHERE field = '%2';").arg(tableName).arg(record.getField()).arg(record.getValue().toString()))) {
+    ErrorHandler::getInstance().addErrorMessage("Can't update data in the table.");
     return false;
   }
   return true;

@@ -6,7 +6,6 @@
 
 #include <QSystemTrayIcon>
 #include <QMenu>
-
 #include "GlobalClasses.hpp"
 #include "PlayerHandler.hpp"
 
@@ -31,18 +30,16 @@ private slots:
   void onStopButtonRelease();
   void onRecordButtonRelease();
   void onSearchButtonRelease();
-  void onAddButtonRelease();
-  void onDeleteButtonRelease();
-  void onEditButtonRelease();
-  void onSaveButtonRelease();
+  void onAddStationButtonRelease();
+  void onDeleteStationButtonRelease();
+  void onEditStationButtonRelease();
+  void onSaveStationButtonRelease();
+  void onThemeButtonRelease();
+  void onRunOnTrayBoxClick(bool checked);
   void onStationRowClick(const QModelIndex &index);
   void onStationRowDoubleClick(const QModelIndex &index);
-  void onThemeButtonRelease();
-  void onVolumeSliderChange(int value);
-  void onRunOnTrayBoxClick(bool checked);
   void onTrayIconClick(QSystemTrayIcon::ActivationReason r);
-
-//  void setTrackMetaData(TrackMetaData *trackMetaData);
+  void onVolumeSliderChange(int value);
 
 private:
   Ui::PlayerWindow *m_ui = nullptr;
@@ -56,16 +53,14 @@ private:
   bool m_isMuted = true;
   bool m_isRunOnTray = false;
   int m_volume = 0;
-  THEME m_themeColor = LIGHT;
   QString m_iconsPath;
+  EDIT m_editState = EDIT::NONE;
+  THEME m_themeColor = THEME::NONE;
 
   void setThemeColor(THEME themeColor);
   void setTrayIcon();
-  void playback(STATE state);
-
-  bool addStation(const QString &stationName, const QString &stationUrl);
-  bool deleteStation();
-  bool updateStation(const QString &stationName, const QString &stationUrl);
+  void playback(PLAYBACK playbackState);
+  void onToggleEditStationButtons();
 
 };
 
