@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   fill="none"
+   stroke="currentColor"
+   stroke-width="2"
+   stroke-linecap="round"
+   stroke-linejoin="round"
+   class="feather feather-menu"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="playlist.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1680"
+     inkscape:window-height="988"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="27.812867"
+     inkscape:cx="6.4721408"
+     inkscape:cy="11.978469"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <line
+     x1="3.0142424"
+     y1="12"
+     x2="20.988642"
+     y2="12"
+     id="line2"
+     style="stroke-width:2;fill:#000000;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round" />
+  <line
+     x1="3.0087793"
+     y1="2.9999001"
+     x2="7.491221"
+     y2="2.9999001"
+     id="line4"
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.99999964;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <line
+     x1="12.000103"
+     y1="20.985758"
+     x2="11.999897"
+     y2="3.0113595"
+     id="line2-4"
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <line
+     x1="3.0125401"
+     y1="7.4999003"
+     x2="7.4874601"
+     y2="7.4999003"
+     id="line4-7"
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.99999976;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <line
+     x1="16.512541"
+     y1="2.9999001"
+     x2="20.987459"
+     y2="2.9999001"
+     id="line4-9"
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <line
+     x1="16.512541"
+     y1="7.4999003"
+     x2="20.987459"
+     y2="7.4999003"
+     id="line4-96"
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.99999964;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <line
+     x1="3.0125403"
+     y1="20.999901"
+     x2="7.4874601"
+     y2="20.999901"
+     id="line4-1"
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.99999964;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <line
+     x1="3.0142424"
+     y1="16.499901"
+     x2="7.4966836"
+     y2="16.499901"
+     id="line4-4"
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.99999964;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <line
+     x1="16.514242"
+     y1="20.999901"
+     x2="20.989161"
+     y2="20.999901"
+     id="line4-73"
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.99999964;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <line
+     x1="16.514242"
+     y1="16.499901"
+     x2="20.989161"
+     y2="16.499901"
+     id="line4-8"
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.99999964;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+</svg>

@@ -29,8 +29,9 @@ public:
   void updateStation(const QModelIndex &index);
   QStandardItemModel* getPlaylistModel();
 
-  int getPlaylistIndex();
-  void setPlaylistIndex(int index);
+  int getSelectedIndex();
+  int getPlayedIndex();
+  void setSelectedIndex(int index);
   bool isPlaylistEmpty();
 
   void play();
@@ -50,7 +51,8 @@ private:
 
   QStandardItemModel m_playlistModel;
   int m_playlistRowsCount = 0;
-  int m_currentPlaylistIndex = 0;
+  int m_currentSelectedIndex = 0;
+  int m_currentPlayedIndex = 0;
 
   void addRowToPlaylist(const DataRecord &dataRecord);
 

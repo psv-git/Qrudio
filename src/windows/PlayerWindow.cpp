@@ -21,32 +21,37 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
 
   m_ui->setupUi(this);
   m_trayIcon = new QSystemTrayIcon(this);
-  m_trayContextMenu = new QMenu("&Menu");
-  m_trayContextMenu->addAction("&Show/Hide", this, SLOT(toggleWindowVisibleAction()));
-  m_trayContextMenu->addAction("&Mute/Unmute", this, SLOT(muteAction()));
-  m_trayContextMenu->addAction("&Exit", this, SLOT(exitAction()));
+  m_trayContextMenu = new QMenu("Menu");
+  m_trayContextMenu->addAction("About", this, SLOT(muteAction()));
+  m_trayContextMenu->addSeparator();
+  m_trayContextMenu->addAction("Show/Hide", this, SLOT(toggleWindowVisibleAction()));
+  m_trayContextMenu->addAction("Mute/Unmute", this, SLOT(muteAction()));
+  m_trayContextMenu->addSeparator();
+  m_trayContextMenu->addAction("Exit", this, SLOT(exitAction()));
   m_trayIcon->setContextMenu(m_trayContextMenu);
 
   setThemeColor(m_themeColor);
   m_ui->runOnTrayCheckBox->setChecked(m_isRunOnTray);
   m_ui->stationsTableView->setModel(m_playerHandler->getPlaylistModel());
+  m_ui->stationsTableView->selectRow(m_playerHandler->getSelectedIndex());
   m_ui->stationsTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
   m_ui->stationsTableView->hideColumn(1); // hide url column
   m_ui->stopButton->hide();
 
   // signals ------------------------------------------------------------------
 
-  connect(m_ui->playButton, SIGNAL(released()), this, SLOT(onPlayButtonRelease()));
-  connect(m_ui->prevPlayButton, SIGNAL(released()), this, SLOT(onPlayButtonRelease()));
-  connect(m_ui->nextPlayButton, SIGNAL(released()), this, SLOT(onPlayButtonRelease()));
+  connect(m_ui->playButton, SIGNAL(released()), this, SLOT(onPlaybackButtonRelease()));
+  connect(m_ui->prevPlayButton, SIGNAL(released()), this, SLOT(onPlaybackButtonRelease()));
+  connect(m_ui->nextPlayButton, SIGNAL(released()), this, SLOT(onPlaybackButtonRelease()));
   connect(m_ui->stopButton, SIGNAL(released()), this, SLOT(onStopButtonRelease()));
   connect(m_ui->recordButton, SIGNAL(released()), this, SLOT(onRecordButtonRelease()));
   connect(m_ui->searchButton, SIGNAL(released()), this, SLOT(onSearchButtonRelease()));
   connect(m_ui->volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(onVolumeSliderChange(int)));
 
-  connect(m_ui->addStationButton, SIGNAL(released()), this, SLOT(onAddStationButtonRelease()));
-  connect(m_ui->deleteStationButton, SIGNAL(released()), this, SLOT(onDeleteStationButtonRelease()));
-  connect(m_ui->editStationButton, SIGNAL(released()), this, SLOT(onEditStationButtonRelease()));
+  connect(m_ui->addPlaylistButton, SIGNAL(released()), this, SLOT(onEditButtonRelease()));
+  connect(m_ui->addStationButton, SIGNAL(released()), this, SLOT(onEditButtonRelease()));
+  connect(m_ui->deleteStationButton, SIGNAL(released()), this, SLOT(onEditButtonRelease()));
+  connect(m_ui->editStationButton, SIGNAL(released()), this, SLOT(onEditButtonRelease()));
   connect(m_ui->saveStationButton, SIGNAL(released()), this, SLOT(onSaveStationButtonRelease()));
 
   connect(m_ui->lightThemeRadioButton, SIGNAL(released()), this, SLOT(onThemeButtonRelease()));
@@ -112,7 +117,7 @@ void PlayerWindow::muteAction() {
 }
 
 
-void PlayerWindow::onPlayButtonRelease() {
+void PlayerWindow::onPlaybackButtonRelease() {
   if (sender() == m_ui->playButton) {
     if (!m_isPlay) playback(PLAYBACK::PLAY);
   } else if (sender() == m_ui->prevPlayButton) {
@@ -139,37 +144,40 @@ void PlayerWindow::onSearchButtonRelease() {
 // http://nashe1.hostingradio.ru/nashe-128.mp3
 // http://ep128.streamr.ru
 
-void PlayerWindow::onAddStationButtonRelease() {
-  (m_editState == EDIT::ADD) ? m_editState = EDIT::NONE : m_editState = EDIT::ADD;
-  onToggleEditStationButtons();
-}
-
-
-void PlayerWindow::onEditStationButtonRelease() {
-  (m_editState == EDIT::EDIT) ? m_editState = EDIT::NONE : m_editState = EDIT::EDIT;
-  onToggleEditStationButtons();
-}
-
-
-void PlayerWindow::onDeleteStationButtonRelease() {
-  (m_editState == EDIT::DELETE) ? m_editState = EDIT::NONE : m_editState = EDIT::DELETE;
-  onToggleEditStationButtons();
+void PlayerWindow::onEditButtonRelease() {
+  if (sender() == m_ui->addPlaylistButton) {
+    QString plylistPath = GetFilePath(tr("Choose file"), tr("Playlist extensions (*.m3u *.m3u8)"));
+    // addPlaylist(playlistPath);
+  } else {
+    if (sender() == m_ui->addStationButton) {
+      (m_editState == EDIT::ADD) ? m_editState = EDIT::NONE : m_editState = EDIT::ADD;
+    } else if (sender() == m_ui->editStationButton) {
+      (m_editState == EDIT::EDIT) ? m_editState = EDIT::NONE : m_editState = EDIT::EDIT;
+    } else if (sender() == m_ui->deleteStationButton) {
+      (m_editState == EDIT::DELETE) ? m_editState = EDIT::NONE : m_editState = EDIT::DELETE;
+    }
+    toggleEditButtons();
+  }
 }
 
 
 void PlayerWindow::onSaveStationButtonRelease() {
-  if (m_editState == EDIT::ADD) m_playerHandler->addStation(DataRecord(m_ui->stationNameEdit->text(), m_ui->stationUrlEdit->text()));
-  else if (m_editState == EDIT::EDIT) m_playerHandler->updateStation(m_ui->stationsTableView->currentIndex());
-  else if (m_editState == EDIT::DELETE) m_playerHandler->deleteStation(m_ui->stationsTableView->currentIndex());
+  if (m_editState == EDIT::ADD) {
+    m_playerHandler->addStation(DataRecord(m_ui->stationNameEdit->text(), m_ui->stationUrlEdit->text()));
+  } else {
+    //if () // !!!
+    if (m_editState == EDIT::EDIT) m_playerHandler->updateStation(m_ui->stationsTableView->currentIndex());
+    else if (m_editState == EDIT::DELETE) m_playerHandler->deleteStation(m_ui->stationsTableView->currentIndex());
+  }
   m_editState = EDIT::NONE;
-  onToggleEditStationButtons();
+  toggleEditButtons();
 }
 
 
 void PlayerWindow::onThemeButtonRelease() {
   QObject *obj = sender();
-  if (obj == m_ui->lightThemeRadioButton) setThemeColor(LIGHT);
-  else setThemeColor(DARK);
+  if (obj == m_ui->lightThemeRadioButton) setThemeColor(THEME::LIGHT);
+  else setThemeColor(THEME::DARK);
 }
 
 
@@ -181,7 +189,7 @@ void PlayerWindow::onRunOnTrayBoxClick(bool checked) {
 
 
 void PlayerWindow::onStationRowClick(const QModelIndex &index) {
-  m_playerHandler->setPlaylistIndex(index.row());
+  m_playerHandler->setSelectedIndex(index.row());
   if (m_ui->editTab->isVisible()) {
     if (m_editState == EDIT::EDIT || m_editState == EDIT::DELETE) {
       m_ui->stationNameEdit->setText(m_ui->stationsTableView->model()->data(index.siblingAtColumn(0)).toString());
@@ -238,7 +246,7 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
   // tabs icons
   QIcon icon = QIcon::fromTheme("media-playback-start", QIcon(m_iconsPath + "radio.svg"));
   m_ui->tabWidget->setTabIcon(0, TransformIcon(icon, 22, 22, 90));
-  icon = QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit-2.svg"));
+  icon = QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit-1.svg"));
   m_ui->tabWidget->setTabIcon(1, TransformIcon(icon, 22, 22, 90));
   icon = QIcon::fromTheme("configure", QIcon(m_iconsPath + "settings.svg"));
   m_ui->tabWidget->setTabIcon(2, TransformIcon(icon, 22, 22, 90));
@@ -250,9 +258,10 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
   m_ui->stopButton->setIcon(QIcon::fromTheme("media-playback-stop", QIcon(m_iconsPath + "stop.svg")));
   m_ui->recordButton->setIcon(QIcon::fromTheme("media-record", QIcon(m_iconsPath + "record.svg")));
   m_ui->searchButton->setIcon(QIcon::fromTheme("search", QIcon(m_iconsPath + "search.svg")));
-  m_ui->addStationButton->setIcon(QIcon::fromTheme("list-add", QIcon(m_iconsPath + "add.svg")));
+  m_ui->addPlaylistButton->setIcon(QIcon::fromTheme("list-add", QIcon(m_iconsPath + "add-1.svg")));
+  m_ui->addStationButton->setIcon(QIcon::fromTheme("list-add", QIcon(m_iconsPath + "add-2.svg")));
   m_ui->deleteStationButton->setIcon(QIcon::fromTheme("edit-delete", QIcon(m_iconsPath + "delete.svg")));
-  m_ui->editStationButton->setIcon(QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit-1.svg")));
+  m_ui->editStationButton->setIcon(QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit-2.svg")));
   m_ui->saveStationButton->setIcon(QIcon::fromTheme("document-save", QIcon(m_iconsPath + "save.svg")));
 
   setTrayIcon();
@@ -282,7 +291,7 @@ void PlayerWindow::playback(PLAYBACK playbackState) {
       m_isPlay = true;
       m_ui->playButton->hide();
       m_ui->stopButton->show();
-      m_ui->stationsTableView->selectRow(m_playerHandler->getPlaylistIndex());
+      m_ui->stationsTableView->selectRow(m_playerHandler->getSelectedIndex());
       setTrayIcon();
       break;
     case PLAYBACK::STOP:
@@ -298,9 +307,17 @@ void PlayerWindow::playback(PLAYBACK playbackState) {
 
 // ----------------------------------------------------------------------------
 
-void PlayerWindow::onToggleEditStationButtons() {
-  m_ui->stationNameEdit->clear();
-  m_ui->stationUrlEdit->clear();
+void PlayerWindow::toggleEditButtons() {
+  if (m_editState == EDIT::EDIT || m_editState == EDIT::DELETE) {
+    m_ui->stationNameEdit->setText(m_ui->stationsTableView->model()->data(m_ui->stationsTableView->currentIndex().siblingAtColumn(0)).toString());
+    m_ui->stationUrlEdit->setText(m_ui->stationsTableView->model()->data(m_ui->stationsTableView->currentIndex().siblingAtColumn(1)).toString());
+  } else {
+    m_ui->stationNameEdit->clear();
+    m_ui->stationUrlEdit->clear();
+  }
+  m_ui->stationNameEdit->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::EDIT);
+  m_ui->stationUrlEdit->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::EDIT);
+  m_ui->addPlaylistButton->setEnabled(!m_ui->addPlaylistButton->isEnabled());
   m_ui->addStationButton->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::NONE);
   m_ui->editStationButton->setEnabled(m_editState == EDIT::EDIT || m_editState == EDIT::NONE);
   m_ui->deleteStationButton->setEnabled(m_editState == EDIT::DELETE || m_editState == EDIT::NONE);

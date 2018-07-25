@@ -74,6 +74,12 @@
     <property name="mouseTracking">
      <bool>false</bool>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::NoContextMenu</enum>
+    </property>
     <property name="acceptDrops">
      <bool>false</bool>
     </property>
@@ -145,6 +151,12 @@ QTabBar:tab:selected {
       <font>
        <family>Liberation Sans</family>
       </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::NoContextMenu</enum>
      </property>
      <property name="styleSheet">
       <string notr="true">QWidget {
@@ -836,6 +848,12 @@ QPushButton:disabled {
      <zorder>searchButton</zorder>
     </widget>
     <widget class="QWidget" name="editTab">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::NoContextMenu</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">QWidget {
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 240, 240, 255), stop:1 rgba(255, 255, 255, 255));
@@ -843,11 +861,11 @@ QPushButton:disabled {
 </string>
      </property>
      <attribute name="title">
-      <string notr="true"/>
+      <string/>
      </attribute>
      <widget class="QLineEdit" name="stationNameEdit">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -866,6 +884,12 @@ QPushButton:disabled {
         <bold>false</bold>
        </font>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::DefaultContextMenu</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">QLineEdit {
 	font: 10pt &quot;Liberation Sans&quot;;
@@ -883,13 +907,16 @@ QLineEdit::disabled {
       <property name="text">
        <string/>
       </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
       <property name="placeholderText">
        <string>Station name</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="stationUrlEdit">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -908,6 +935,9 @@ QLineEdit::disabled {
         <bold>false</bold>
        </font>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">QLineEdit {
 	font: 10pt &quot;Liberation Sans&quot;;
@@ -921,6 +951,15 @@ QLineEdit::disabled {
 	background-color: rgba(230, 230, 230, 255);
 }
 </string>
+      </property>
+      <property name="inputMethodHints">
+       <set>Qt::ImhUrlCharactersOnly</set>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
+      <property name="echoMode">
+       <enum>QLineEdit::Normal</enum>
       </property>
       <property name="placeholderText">
        <string>Station url</string>
@@ -942,6 +981,9 @@ QLineEdit::disabled {
        <font>
         <family>Liberation Sans</family>
        </font>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
@@ -991,6 +1033,9 @@ QPushButton:disabled {
         <family>Liberation Sans</family>
        </font>
       </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
 	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
@@ -1032,6 +1077,9 @@ QPushButton:disabled {
        <font>
         <family>Liberation Sans</family>
        </font>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
@@ -1075,6 +1123,9 @@ QPushButton:disabled {
         <family>Liberation Sans</family>
        </font>
       </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
 	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
@@ -1117,6 +1168,9 @@ QPushButton:disabled {
         <family>Liberation Sans</family>
        </font>
       </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
 	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,  stop: 0 rgba(245,245, 245, 255), stop: 1 rgba(210, 210, 210, 255));
@@ -1150,6 +1204,9 @@ QPushButton:disabled {
      </widget>
     </widget>
     <widget class="QWidget" name="settingsTab">
+     <property name="contextMenuPolicy">
+      <enum>Qt::NoContextMenu</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">QWidget {
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 240, 240, 255), stop:1 rgba(255, 255, 255, 255));
@@ -1329,6 +1386,12 @@ QPushButton:disabled {
       <bold>false</bold>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::NoContextMenu</enum>
+    </property>
     <property name="styleSheet">
      <string notr="true">QTableView {
 	font: 10pt &quot;Liberation Sans&quot;;
@@ -1357,9 +1420,6 @@ QPushButton:disabled {
     <property name="editTriggers">
      <set>QAbstractItemView::DoubleClicked|QAbstractItemView::SelectedClicked</set>
     </property>
-    <property name="tabKeyNavigation">
-     <bool>false</bool>
-    </property>
     <property name="showDropIndicator" stdset="0">
      <bool>false</bool>
     </property>
@@ -1371,6 +1431,12 @@ QPushButton:disabled {
     </property>
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectRows</enum>
+    </property>
+    <property name="textElideMode">
+     <enum>Qt::ElideNone</enum>
+    </property>
+    <property name="sortingEnabled">
+     <bool>false</bool>
     </property>
     <property name="wordWrap">
      <bool>false</bool>

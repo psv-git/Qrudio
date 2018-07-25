@@ -26,13 +26,11 @@ private slots:
   void toggleWindowVisibleAction();
   void exitAction();
   void muteAction();
-  void onPlayButtonRelease();
+  void onPlaybackButtonRelease();
   void onStopButtonRelease();
   void onRecordButtonRelease();
   void onSearchButtonRelease();
-  void onAddStationButtonRelease();
-  void onDeleteStationButtonRelease();
-  void onEditStationButtonRelease();
+  void onEditButtonRelease();
   void onSaveStationButtonRelease();
   void onThemeButtonRelease();
   void onRunOnTrayBoxClick(bool checked);
@@ -60,7 +58,7 @@ private:
   void setThemeColor(THEME themeColor);
   void setTrayIcon();
   void playback(PLAYBACK playbackState);
-  void onToggleEditStationButtons();
+  void toggleEditButtons();
 
 };
 

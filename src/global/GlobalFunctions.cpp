@@ -45,7 +45,7 @@ void RemoveDirectory(const QString &directoryPath, const QString &directoryName)
 }
 
 
-// extStr may be "Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml)" for example
+// extStr: "Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml)" for example
 const QString GetFilePath(const QString &title, const QString &extStr) {
   return QFileDialog::getOpenFileName(nullptr, title, "./", extStr);
 }
