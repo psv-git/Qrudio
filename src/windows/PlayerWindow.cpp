@@ -32,12 +32,10 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
 
   setThemeColor(m_themeColor);
   m_ui->runOnTrayCheckBox->setChecked(m_isRunOnTray);
-  m_ui->stationsTableView->setModel(m_playerHandler->getPlaylistModel());
-  m_ui->stationsTableView->selectRow(m_playerHandler->getSelectedIndex());
-  m_ui->stationsTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-  m_ui->stationsTableView->hideColumn(1); // hide url column
-//  m_ui->stationsTableView->
-//  m_ui->stationsTableView->model()->index(0, 0);
+  m_ui->stationsTreeView->setModel(m_playerHandler->getPlaylistModel());
+//  m_ui->stationsTreeView->selectRow(m_playerHandler->getSelectedIndex());
+//  m_ui->stationsTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+//  m_ui->stationsTreeView->hideColumn(1); // hide url column
 
   m_ui->stopButton->hide();
 
@@ -61,8 +59,8 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
   connect(m_ui->darkThemeRadioButton, SIGNAL(released()), this, SLOT(onThemeButtonRelease()));
   connect(m_ui->runOnTrayCheckBox, SIGNAL(toggled(bool)), this, SLOT(onRunOnTrayBoxClick(bool)));
 
-  connect(m_ui->stationsTableView, SIGNAL(clicked(QModelIndex)), this, SLOT(onStationRowClick(QModelIndex)));
-  connect(m_ui->stationsTableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onStationRowDoubleClick(QModelIndex)));
+//  connect(m_ui->stationsTreeView, SIGNAL(clicked(QModelIndex)), this, SLOT(onStationRowClick(QModelIndex)));
+//  connect(m_ui->stationsTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onStationRowDoubleClick(QModelIndex)));
 
   connect(m_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onTrayIconClick(QSystemTrayIcon::ActivationReason)));
 }
@@ -164,12 +162,11 @@ void PlayerWindow::onEditButtonRelease() {
 
 void PlayerWindow::onSaveStationButtonRelease() {
   if (m_editState == EDIT::ADD) {
-    m_playerHandler->addStation(DataRecord(m_ui->stationNameEdit->text(), m_ui->stationUrlEdit->text()));
-//    if (m_playerHandler->getSelectedIndex() == 1) m_ui->stationsTableView->hideColumn(1);
+//    m_playerHandler->addStation(DataRecord(m_ui->stationNameEdit->text(), m_ui->stationUrlEdit->text()));
+//    if (m_playerHandler->getSelectedIndex() == 1) m_ui->stationsTreeView->hideColumn(1);
   } else {
-    //if () // !!!
-    if (m_editState == EDIT::EDIT) m_playerHandler->updateStation(m_ui->stationsTableView->currentIndex());
-    else if (m_editState == EDIT::DELETE) m_playerHandler->deleteStation(m_ui->stationsTableView->currentIndex());
+//    if (m_editState == EDIT::EDIT) m_playerHandler->updateStation(m_ui->stationsTreeView->currentIndex());
+//    else if (m_editState == EDIT::DELETE) m_playerHandler->deleteStation(m_ui->stationsTreeView->currentIndex());
   }
   m_editState = EDIT::NONE;
   toggleEditButtons();
@@ -194,8 +191,8 @@ void PlayerWindow::onStationRowClick(const QModelIndex &index) {
   m_playerHandler->setSelectedIndex(index.row());
   if (m_ui->editTab->isVisible()) {
     if (m_editState == EDIT::EDIT || m_editState == EDIT::DELETE) {
-      m_ui->stationNameEdit->setText(m_ui->stationsTableView->model()->data(index.siblingAtColumn(0)).toString());
-      m_ui->stationUrlEdit->setText(m_ui->stationsTableView->model()->data(index.siblingAtColumn(1)).toString());
+//      m_ui->stationNameEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
+//      m_ui->stationUrlEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(1)).toString());
     }
   }
 }
@@ -293,7 +290,7 @@ void PlayerWindow::playback(PLAYBACK playbackState) {
       m_isPlay = true;
       m_ui->playButton->hide();
       m_ui->stopButton->show();
-      m_ui->stationsTableView->selectRow(m_playerHandler->getSelectedIndex());
+//      m_ui->stationsTreeView->selectRow(m_playerHandler->getSelectedIndex());
       setTrayIcon();
       break;
     case PLAYBACK::STOP:
@@ -311,8 +308,8 @@ void PlayerWindow::playback(PLAYBACK playbackState) {
 
 void PlayerWindow::toggleEditButtons() {
   if (m_editState == EDIT::EDIT || m_editState == EDIT::DELETE) {
-    m_ui->stationNameEdit->setText(m_ui->stationsTableView->model()->data(m_ui->stationsTableView->currentIndex().siblingAtColumn(0)).toString());
-    m_ui->stationUrlEdit->setText(m_ui->stationsTableView->model()->data(m_ui->stationsTableView->currentIndex().siblingAtColumn(1)).toString());
+//    m_ui->stationNameEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->currentIndex().siblingAtColumn(0)).toString());
+//    m_ui->stationUrlEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->currentIndex().siblingAtColumn(1)).toString());
   } else {
     m_ui->stationNameEdit->clear();
     m_ui->stationUrlEdit->clear();

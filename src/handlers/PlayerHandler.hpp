@@ -4,10 +4,11 @@
 #ifndef PLAYERHANDLER_HPP
 #define PLAYERHANDLER_HPP
 
-#include <QStandardItemModel>
 #include "GlobalClasses.hpp"
 #include "DataBaseHandler.hpp"
-#include "TrackMetaData.hpp"
+#include "PlaylistModel.hpp"
+
+//#include "TrackMetaData.hpp"
 
 //#include <QObject>
 //#include <QByteArray>
@@ -24,15 +25,19 @@ public:
   explicit PlayerHandler(QObject *parent = nullptr);
   ~PlayerHandler();
 
-  void addStation(const DataRecord &dataRecord);
-  void deleteStation(const QModelIndex &index);
-  void updateStation(const QModelIndex &index);
-  QStandardItemModel* getPlaylistModel();
+  bool addCategory(const QString &title);
+  bool deleteCategory(const QModelIndex &index);
+
+  bool addStation(const StationRecord &stationRecord);
+  bool deleteStation(const QModelIndex &index);
+  bool updateStation(const QModelIndex &index);
+
+  PlaylistModel* getPlaylistModel();
+  bool isPlaylistEmpty();
 
   int getSelectedIndex();
   int getPlayedIndex();
   void setSelectedIndex(int index);
-  bool isPlaylistEmpty();
 
   void play();
   void playPrev();
@@ -49,13 +54,13 @@ private:
   bool m_isPlaylistIndexChanged = false;
   int m_volume = 0;
 
-  QStandardItemModel m_playlistModel;
+  PlaylistModel m_playlistModel;
   int m_playlistRowsCount = 0;
   int m_currentSelectedIndex = 0;
   int m_currentPlayedIndex = 0;
 
-  void addRowToPlaylist(const DataRecord &dataRecord);
-  void deleteRowFromPlaylist(int index);
+//  void addRowToPlaylist(const StationRecord &stationRecord);
+//  void deleteRowFromPlaylist(int index);
 
 };
 

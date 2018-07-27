@@ -7,7 +7,7 @@
 StationRecord::StationRecord() {}
 
 
-StationRecord::StationRecord(const QString &categoryTitle, const QString &stationTitle, const QVariant &stationUrl) {
+StationRecord::StationRecord(const QString &categoryTitle, const QString &stationTitle, const QString &stationUrl) {
   m_categoryTitle = categoryTitle;
   m_stationTitle = stationTitle;
   m_stationUrl = stationUrl;

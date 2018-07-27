@@ -1368,7 +1368,7 @@ QPushButton:disabled {
      </widget>
     </widget>
    </widget>
-   <widget class="QTreeView" name="stationTreeView">
+   <widget class="QTreeView" name="stationsTreeView">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -1376,6 +1376,11 @@ QPushButton:disabled {
       <width>300</width>
       <height>180</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTreeView {
+	background-color: rgb(255, 255, 255);
+}</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>

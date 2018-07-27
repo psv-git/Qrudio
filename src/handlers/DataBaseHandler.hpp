@@ -15,15 +15,15 @@ public:
   explicit DataBaseHandler();
   ~DataBaseHandler();
 
-  bool addRecord(const QString &tableName, const DataRecord &record);
-  bool deleteRecord(const QString &tableName, const DataRecord &record);
-  bool updateRecord(const QString &tableName, const DataRecord &record);
-  QVector<DataRecord*>* getRecordsList(const QString &tableName);
+  bool addRecord(const QString &tableName, const StationRecord &record);
+  bool deleteRecord(const QString &tableName, const StationRecord &record);
+  bool updateRecord(const QString &tableName, const StationRecord &record);
+  QVector<StationRecord*>* getRecordsList(const QString &tableName);
 
 private:
   QSqlDatabase m_dataBase;
   QSqlQuery *m_query = nullptr; // must be created after database init
-  QVector<DataRecord*> m_recordsList;
+  QVector<StationRecord*> m_recordsList;
 
   bool sendQuery(const QString &queryString);
   void clearRecordsList();

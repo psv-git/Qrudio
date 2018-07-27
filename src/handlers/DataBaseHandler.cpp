@@ -29,9 +29,9 @@ DataBaseHandler::~DataBaseHandler() {
 
 // public methods =============================================================
 
-bool DataBaseHandler::addRecord(const QString &tableName, const DataRecord &record) {
+bool DataBaseHandler::addRecord(const QString &tableName, const StationRecord &record) {
   if (!record.isValid()) false;
-  if (!sendQuery(QString("INSERT INTO %1 (field, value) VALUES ('%2', '%3');").arg(tableName).arg(record.getField()).arg(record.getValue().toString()))) {
+  if (!sendQuery(QString("INSERT INTO %1 (field, value) VALUES ('%2', '%3');").arg(tableName).arg(record.getStationTitle()).arg(record.getStationUrl()))) {
     ErrorHandler::getInstance().addErrorMessage("Can't add data to the table.");
     return false;
   }
@@ -39,9 +39,9 @@ bool DataBaseHandler::addRecord(const QString &tableName, const DataRecord &reco
 }
 
 
-bool DataBaseHandler::deleteRecord(const QString &tableName, const DataRecord &record) {
+bool DataBaseHandler::deleteRecord(const QString &tableName, const StationRecord &record) {
   if (!record.isValid()) false;
-  if (!sendQuery(QString("DELETE FROM %1 WHERE field = '%2';").arg(tableName).arg(record.getField()))) {
+  if (!sendQuery(QString("DELETE FROM %1 WHERE field = '%2';").arg(tableName).arg(record.getStationTitle()))) {
     ErrorHandler::getInstance().addErrorMessage("Can't delete data from the table.");
     return false;
   }
@@ -49,9 +49,9 @@ bool DataBaseHandler::deleteRecord(const QString &tableName, const DataRecord &r
 }
 
 
-bool DataBaseHandler::updateRecord(const QString &tableName, const DataRecord &record) {
+bool DataBaseHandler::updateRecord(const QString &tableName, const StationRecord &record) {
   if (!record.isValid()) false;
-  if (!sendQuery(QString("UPDATE %1 SET value = '%3' WHERE field = '%2';").arg(tableName).arg(record.getField()).arg(record.getValue().toString()))) {
+  if (!sendQuery(QString("UPDATE %1 SET value = '%3' WHERE field = '%2';").arg(tableName).arg(record.getStationTitle()).arg(record.getStationUrl()))) {
     ErrorHandler::getInstance().addErrorMessage("Can't update data in the table.");
     return false;
   }
@@ -59,14 +59,14 @@ bool DataBaseHandler::updateRecord(const QString &tableName, const DataRecord &r
 }
 
 
-QVector<DataRecord*>* DataBaseHandler::getRecordsList(const QString &tableName) {
+QVector<StationRecord*>* DataBaseHandler::getRecordsList(const QString &tableName) {
   clearRecordsList();
   if (!sendQuery(QString("SELECT * FROM %1").arg(tableName))) {
     ErrorHandler::getInstance().addErrorMessage("Can't read information from the table.");
   } else {
     while (m_query->next()) {
       QSqlRecord rec = m_query->record();
-      m_recordsList.push_back(new DataRecord(rec.value(0).toString(), rec.value(1).toString()));
+      m_recordsList.push_back(new StationRecord("", rec.value(0).toString(), rec.value(1).toString()));
     }
   }
   return &m_recordsList;

@@ -1,6 +1,4 @@
-#include <QtWidgets>
 #include "PlaylistModel.hpp"
-#include "PlaylistItem.hpp"
 
 
 PlaylistModel::PlaylistModel() {
@@ -64,7 +62,7 @@ int PlaylistModel::columnCount(const QModelIndex &index) const {
 }
 
 
-bool PlaylistModel::addRow(const PlaylistItem &playlistItem, const QModelIndex &index) {
+bool PlaylistModel::addRow(PlaylistItem &playlistItem, const QModelIndex &index) {
   PlaylistItem *parent = getItemFromIndex(index);
   return parent->addChild(playlistItem);
 }

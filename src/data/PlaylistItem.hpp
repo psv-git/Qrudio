@@ -9,28 +9,30 @@ class PlaylistItem {
 
 public:
   PlaylistItem();
-  PlaylistItem(PlaylistItem *parentItem = nullptr, const QString &categoryTitle);
-  PlaylistItem(PlaylistItem *parentItem = nullptr, const StationRecord &stationRecord);
+  PlaylistItem(const QString &title, PlaylistItem *parent = nullptr);
+  PlaylistItem(const StationRecord &stationRecord, PlaylistItem *parent = nullptr);
   ~PlaylistItem();
 
-  PlaylistItem *getParent();
   PlaylistItem *getChild(int row);
 
-  bool addChild(const PlaylistItem &playlistItem);
+  bool addChild(PlaylistItem &child);
   bool deleteChild(int row);
 
   int getChildCount() const;
-  int getRowFor(PlaylistItem *item = nullptr) const;
+  int getRowFor(PlaylistItem *item = nullptr);
+
+  PlaylistItem *getParent();
+  void setParent(PlaylistItem *parent);
 
   QString getData(int column) const;
-  bool setData(int column, const QString &dataValue);
+  bool setData(int column, const QString &value);
 
 private:
   bool m_isRoot = false;
   bool m_isCategory = false;
 
-  PlaylistItem *m_parentItem = nullptr;
-  QList<PlaylistItem*> m_childItemsList;
+  PlaylistItem *m_parent = nullptr;
+  QList<PlaylistItem*> m_childsList;
 
   QString m_title;
   QString m_url;

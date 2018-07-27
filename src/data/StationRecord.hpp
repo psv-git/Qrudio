@@ -11,7 +11,7 @@ class StationRecord {
 
 public:
   StationRecord();
-  StationRecord(const QString &categoryTitle, const QString &stationTitle, const QVariant &stationUrl);
+  StationRecord(const QString &categoryTitle, const QString &stationTitle, const QString &stationUrl);
   ~StationRecord();
 
   bool isValid() const;
