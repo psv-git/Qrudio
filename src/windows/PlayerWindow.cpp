@@ -36,6 +36,9 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
   m_ui->stationsTableView->selectRow(m_playerHandler->getSelectedIndex());
   m_ui->stationsTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
   m_ui->stationsTableView->hideColumn(1); // hide url column
+//  m_ui->stationsTableView->
+//  m_ui->stationsTableView->model()->index(0, 0);
+
   m_ui->stopButton->hide();
 
   // signals ------------------------------------------------------------------
@@ -141,8 +144,6 @@ void PlayerWindow::onSearchButtonRelease() {
   if (!trackTitle.isEmpty()) OpenUrl("https://www.google.ru/search?q=" + trackTitle);
 }
 
-// http://nashe1.hostingradio.ru/nashe-128.mp3
-// http://ep128.streamr.ru
 
 void PlayerWindow::onEditButtonRelease() {
   if (sender() == m_ui->addPlaylistButton) {
@@ -164,6 +165,7 @@ void PlayerWindow::onEditButtonRelease() {
 void PlayerWindow::onSaveStationButtonRelease() {
   if (m_editState == EDIT::ADD) {
     m_playerHandler->addStation(DataRecord(m_ui->stationNameEdit->text(), m_ui->stationUrlEdit->text()));
+//    if (m_playerHandler->getSelectedIndex() == 1) m_ui->stationsTableView->hideColumn(1);
   } else {
     //if () // !!!
     if (m_editState == EDIT::EDIT) m_playerHandler->updateStation(m_ui->stationsTableView->currentIndex());

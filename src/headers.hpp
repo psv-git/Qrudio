@@ -12,6 +12,9 @@
 #include <QIcon>
 #include <QEventLoop>
 #include <QCloseEvent>
+#include <QList>
+#include <QVariant>
+#include <QVector>
 
 // debug
 #include <QDebug>

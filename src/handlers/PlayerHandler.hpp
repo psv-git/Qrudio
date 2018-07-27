@@ -55,6 +55,7 @@ private:
   int m_currentPlayedIndex = 0;
 
   void addRowToPlaylist(const DataRecord &dataRecord);
+  void deleteRowFromPlaylist(int index);
 
 };
 

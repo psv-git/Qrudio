@@ -37,19 +37,20 @@ INCLUDEPATH += \
 
 SOURCES += \
     src/main.cpp \
-    src/data/DataRecord.cpp \
     src/data/TrackMetaData.cpp \
     src/global/GlobalFunctions.cpp \
     src/handlers/ErrorHandler.cpp \
     src/handlers/SettingsHandler.cpp \
     src/handlers/DataBaseHandler.cpp \
     src/handlers/PlayerHandler.cpp \
-    src/windows/PlayerWindow.cpp
+    src/windows/PlayerWindow.cpp \
+    src/data/PlaylistModel.cpp \
+    src/data/PlaylistItem.cpp \
+    src/data/StationRecord.cpp
 
 
 HEADERS += \
     src/headers.hpp \
-    src/data/DataRecord.hpp \
     src/data/TrackMetaData.hpp \
     src/global/GlobalVariables.hpp \
     src/global/GlobalClasses.hpp \
@@ -58,7 +59,10 @@ HEADERS += \
     src/handlers/SettingsHandler.hpp \
     src/handlers/DataBaseHandler.hpp \
     src/handlers/PlayerHandler.hpp \
-    src/windows/PlayerWindow.hpp
+    src/windows/PlayerWindow.hpp \
+    src/data/PlaylistModel.hpp \
+    src/data/PlaylistItem.hpp \
+    src/data/StationRecord.hpp
 
 
 FORMS += \

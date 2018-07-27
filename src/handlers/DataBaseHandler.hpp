@@ -6,7 +6,7 @@
 
 #include <QtSql>
 #include "GlobalClasses.hpp"
-#include "DataRecord.hpp"
+#include "StationRecord.hpp"
 
 
 class DataBaseHandler {
