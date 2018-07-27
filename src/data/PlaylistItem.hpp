@@ -9,20 +9,20 @@ class PlaylistItem {
 
 public:
   PlaylistItem();
-  PlaylistItem(const QString &title, PlaylistItem *parent = nullptr);
-  PlaylistItem(const StationRecord &stationRecord, PlaylistItem *parent = nullptr);
+  PlaylistItem(const QString &categoryTitle, const PlaylistItem *parent = nullptr);
+  PlaylistItem(const StationRecord &stationRecord, const PlaylistItem *parent = nullptr);
   ~PlaylistItem();
 
-  PlaylistItem *getChild(int row);
+  PlaylistItem *getChild(int row) const;
 
-  bool addChild(PlaylistItem &child);
+  bool addChild(PlaylistItem *child);
   bool deleteChild(int row);
 
   int getChildCount() const;
-  int getRowFor(PlaylistItem *item = nullptr);
+  int getRowFor(const PlaylistItem *item = nullptr) const;
 
-  PlaylistItem *getParent();
-  void setParent(PlaylistItem *parent);
+  PlaylistItem *getParent() const;
+  void setParent(const PlaylistItem *parent);
 
   QString getData(int column) const;
   bool setData(int column, const QString &value);

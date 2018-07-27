@@ -35,7 +35,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
   m_ui->stationsTreeView->setModel(m_playerHandler->getPlaylistModel());
 //  m_ui->stationsTreeView->selectRow(m_playerHandler->getSelectedIndex());
 //  m_ui->stationsTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-//  m_ui->stationsTreeView->hideColumn(1); // hide url column
+  m_ui->stationsTreeView->hideColumn(1); // hide url column
 
   m_ui->stopButton->hide();
 

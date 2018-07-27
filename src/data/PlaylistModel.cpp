@@ -64,7 +64,7 @@ int PlaylistModel::columnCount(const QModelIndex &index) const {
 
 bool PlaylistModel::addRow(PlaylistItem &playlistItem, const QModelIndex &index) {
   PlaylistItem *parent = getItemFromIndex(index);
-  return parent->addChild(playlistItem);
+  return parent->addChild(&playlistItem);
 }
 
 

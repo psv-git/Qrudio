@@ -19,6 +19,10 @@ PlayerHandler::PlayerHandler(QObject *parent) : QObject(parent) {
 
   m_player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
   this->setVolume(0);
+
+  addCategory("test1");
+  addCategory("test2");
+  addCategory("test3");
 }
 
 
@@ -30,8 +34,10 @@ PlayerHandler::~PlayerHandler() {
 // public methods =============================================================
 
 bool PlayerHandler::addCategory(const QString &categoryTitle) {
-  PlaylistItem *item = new PlaylistItem(categoryTitle);
-  return m_playlistModel.addRow(*item);
+  PlaylistItem *category = new PlaylistItem(categoryTitle);
+  PlaylistItem *station = new PlaylistItem(StationRecord(categoryTitle, "st", "url"), category);
+  category->addChild(station);
+  return m_playlistModel.addRow(*category);
 }
 
 

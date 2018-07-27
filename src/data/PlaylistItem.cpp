@@ -8,16 +8,16 @@ PlaylistItem::PlaylistItem() {
 
 
 // constructor for category node
-PlaylistItem::PlaylistItem(const QString &title, PlaylistItem *parent) {
+PlaylistItem::PlaylistItem(const QString &categoryTitle, const PlaylistItem *parent) {
   m_isCategory = true;
-  m_parent = parent;
-  m_title = title;
+  m_parent = const_cast<PlaylistItem*>(parent);
+  m_title = categoryTitle;
 }
 
 
 // constructor for station node
-PlaylistItem::PlaylistItem(const StationRecord &stationRecord, PlaylistItem *parent) {
-  m_parent = parent;
+PlaylistItem::PlaylistItem(const StationRecord &stationRecord, const PlaylistItem *parent) {
+  m_parent = const_cast<PlaylistItem*>(parent);
   m_title = stationRecord.getStationTitle();
   m_url = stationRecord.getStationUrl();
 }
@@ -32,15 +32,15 @@ PlaylistItem::~PlaylistItem() {
 
 // public methods =============================================================
 
-PlaylistItem* PlaylistItem::getChild(int row) {
+PlaylistItem* PlaylistItem::getChild(int row) const {
   return m_childsList.value(row, nullptr);
 }
 
 
-bool PlaylistItem::addChild(PlaylistItem &child) {
-  if (!m_childsList.contains(&child)) {
-    m_childsList.append(&child);
-    child.setParent(this);
+bool PlaylistItem::addChild(PlaylistItem *child) {
+  if (!m_childsList.contains(child)) {
+    m_childsList.append(child);
+    child->setParent(this);
     return true;
   }
   return false;
@@ -59,34 +59,33 @@ int PlaylistItem::getChildCount() const {
 }
 
 
-int PlaylistItem::getRowFor(PlaylistItem *item) {
+int PlaylistItem::getRowFor(const PlaylistItem *item) const {
   if (!item || item == this) {
     if (m_parent) return m_parent->getRowFor(this);
   } else {
-    return m_childsList.indexOf(item);
+    return m_childsList.indexOf(const_cast<PlaylistItem*>(item));
   }
   return 0;
 }
 
 
-PlaylistItem* PlaylistItem::getParent() {
+PlaylistItem* PlaylistItem::getParent() const {
   return m_parent;
 }
 
 
-void PlaylistItem::setParent(PlaylistItem *parent) {
+void PlaylistItem::setParent(const PlaylistItem *parent) {
   if (m_parent != parent) {
-    m_parent = parent;
-    m_parent->addChild(*this);
+    m_parent = const_cast<PlaylistItem*>(parent);
+    m_parent->addChild(this);
   }
 }
 
 
 QString PlaylistItem::getData(int column) const {
   switch (column) {
-    case 0: return m_parent->getData(1); // get category title
-    case 1: return m_title;
-    case 2: return m_url;
+    case 0: return m_title;
+    case 1: return m_url;
     default: return QString();
   }
 }
@@ -94,8 +93,8 @@ QString PlaylistItem::getData(int column) const {
 
 bool PlaylistItem::setData(int column, const QString &value) {
   if (m_isRoot) return false;
-  if (column == 1) m_title = value;
-  else if (column == 2 && !m_isCategory) m_url = value;
+  if (column == 0) m_title = value;
+  else if (column == 1 && !m_isCategory) m_url = value;
   else return false;
   return true;
 }
