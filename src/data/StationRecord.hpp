@@ -11,23 +11,24 @@ class StationRecord {
 
 public:
   StationRecord();
-  StationRecord(const QString &categoryTitle, const QString &stationTitle, const QString &stationUrl, int id = 0);
+  StationRecord(const QVariant &categoryTitle, const QVariant &stationTitle, const QVariant &stationUrl, const QVariant &id = QVariant());
   ~StationRecord();
 
   bool isValid() const;
 
-  int getId() const;
-  const QString& getCategoryTitle() const;
-  const QString& getStationTitle() const;
-  const QString& getStationUrl() const;
+  const QVariant& getId() const;
+  void setId(const QVariant &id);
+
+  const QVariant& getCategoryTitle() const;
+  const QVariant& getStationTitle() const;
+  const QVariant& getStationUrl() const;
 
 private:
   bool m_isValid = false;
-
-  QString m_categoryTitle;
-  QString m_stationTitle;
-  QString m_stationUrl;
-  int m_id = -1;
+  QVariant m_categoryTitle;
+  QVariant m_stationTitle;
+  QVariant m_stationUrl;
+  QVariant m_id;
 
 };
 

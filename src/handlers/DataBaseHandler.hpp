@@ -16,8 +16,8 @@ public:
   explicit DataBaseHandler();
   ~DataBaseHandler();
 
-  bool addRecord(const StationRecord &record);
-  bool deleteRecord(const StationRecord &record);
+  int addRecord(const StationRecord &record);
+  bool deleteRecord(int recordId);
 //  bool updateRecord(const StationRecord &record);
   QList<StationRecord*>* getRecordsList();
 

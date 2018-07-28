@@ -8,27 +8,27 @@ PlaylistItem::PlaylistItem() {
 
 
 // constructor for category node
-PlaylistItem::PlaylistItem(const QString &categoryTitle, const PlaylistItem *parent) {
+PlaylistItem::PlaylistItem(const QVariant &categoryTitle, const PlaylistItem *parentItem) {
   m_isCategory = true;
-  m_parent = const_cast<PlaylistItem*>(parent);
-  m_title = QVariant(categoryTitle);
+  m_parentItem = const_cast<PlaylistItem*>(parentItem);
+  m_title = categoryTitle;
 }
 
 
 // constructors for station node
-PlaylistItem::PlaylistItem(const StationRecord &stationRecord, const PlaylistItem *parent) : PlaylistItem(&stationRecord, parent) {}
+PlaylistItem::PlaylistItem(const StationRecord &record, const PlaylistItem *parentItem) : PlaylistItem(&record, parentItem) {}
 
-PlaylistItem::PlaylistItem(const StationRecord *stationRecord, const PlaylistItem *parent) {
-  m_parent = const_cast<PlaylistItem*>(parent);
-  m_title = QVariant(stationRecord->getStationTitle());
-  m_url = QVariant(stationRecord->getStationUrl());
-  m_id = QVariant(stationRecord->getId());
+PlaylistItem::PlaylistItem(const StationRecord *record, const PlaylistItem *parentItem) {
+  m_parentItem = const_cast<PlaylistItem*>(parentItem);
+  m_title = record->getStationTitle();
+  m_url = record->getStationUrl();
+  m_id = record->getId();
 }
 
 
 // copy constructor
 PlaylistItem::PlaylistItem(const PlaylistItem &item) {
-  m_parent = item.getParent();
+  m_parentItem = item.getParent();
   if (!item.isRoot()) {
     m_title = item.getData(0);
     if (!item.isCategory()) {
@@ -40,10 +40,10 @@ PlaylistItem::PlaylistItem(const PlaylistItem &item) {
 
 
 PlaylistItem::~PlaylistItem() {
-  for (int i = 0; i < m_childsList.size(); i++) {
-    delete m_childsList.at(i);
+  for (int i = 0; i < m_childItemsList.size(); i++) {
+    delete m_childItemsList.at(i);
   }
-  m_childsList.clear();
+  m_childItemsList.clear();
 }
 
 // public methods =============================================================
@@ -59,19 +59,19 @@ bool PlaylistItem::isCategory() const {
 
 
 PlaylistItem* PlaylistItem::getChild(int row) const {
-  return m_childsList.value(row, nullptr);
+  return m_childItemsList.value(row, nullptr);
 }
 
 
-bool PlaylistItem::addChild(const PlaylistItem &child) {
-  return this->addChild(new PlaylistItem(child));
+bool PlaylistItem::addChild(const PlaylistItem &childItem) {
+  return this->addChild(new PlaylistItem(childItem));
 }
 
 
-bool PlaylistItem::addChild(const PlaylistItem *child) {
-  PlaylistItem *item = const_cast<PlaylistItem*>(child);
-  if (!m_childsList.contains(item)) {
-    m_childsList.append(item);
+bool PlaylistItem::addChild(const PlaylistItem *childItem) {
+  PlaylistItem *item = const_cast<PlaylistItem*>(childItem);
+  if (!m_childItemsList.contains(item)) {
+    m_childItemsList.append(item);
     item->setParent(this);
     return true;
   }
@@ -80,38 +80,36 @@ bool PlaylistItem::addChild(const PlaylistItem *child) {
 
 
 bool PlaylistItem::deleteChild(int row) {
-  if (row < 0 || row >= m_childsList.size()) return false;
+  if (row < 0 || row >= m_childItemsList.size()) return false;
 
-  delete m_childsList.takeAt(row);
+  delete m_childItemsList.takeAt(row);
   return true;
 }
 
 
 int PlaylistItem::getChildCount() const {
-  return m_childsList.size();
+  return m_childItemsList.size();
 }
 
 
 // get row for this from parent object
 int PlaylistItem::getRowFor(const PlaylistItem *item) const {
   if (!item || item == this) {
-    if (m_parent) return m_parent->getRowFor(this);
-  } else {
-    return m_childsList.indexOf(const_cast<PlaylistItem*>(item));
-  }
+    if (m_parentItem) return m_parentItem->getRowFor(this);
+  } else return m_childItemsList.indexOf(const_cast<PlaylistItem*>(item));
   return 0;
 }
 
 
 PlaylistItem* PlaylistItem::getParent() const {
-  return m_parent;
+  return m_parentItem;
 }
 
 
-void PlaylistItem::setParent(const PlaylistItem *parent) {
-  if (m_parent != parent) {
-    m_parent = const_cast<PlaylistItem*>(parent);
-    m_parent->addChild(this);
+void PlaylistItem::setParent(const PlaylistItem *parentItem) {
+  if (m_parentItem != parentItem) {
+    m_parentItem = const_cast<PlaylistItem*>(parentItem);
+    m_parentItem->addChild(this);
   }
 }
 
@@ -121,7 +119,7 @@ QVariant PlaylistItem::getData(int column) const {
   else if (column == 1) return m_url;
   else if (column == 2) return m_id;
   else if (column == 3) {
-    if (!this->isRoot() && !this->isCategory() && m_parent) return m_parent->getData(0);
+    if (!this->isRoot() && !this->isCategory() && m_parentItem) return m_parentItem->getData(0);
   }
   return QVariant();
 }

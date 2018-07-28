@@ -25,9 +25,9 @@ public:
   explicit PlayerHandler(QObject *parent = nullptr);
   ~PlayerHandler();
 
-  bool addStation(const StationRecord &stationRecord);
-  bool deleteStation(const QModelIndex &index);
-  bool updateStation(const QModelIndex &index);
+  bool addStation(const StationRecord &record);
+  bool deleteStation(const QModelIndex &itemIndex);
+  bool updateStation(const QModelIndex &itemindex);
 
   PlaylistModel* getPlaylistModel() const;
   bool isPlaylistEmpty() const;
@@ -45,9 +45,10 @@ public:
 
 private:
   DataBaseHandler *m_dataBaseHandler = nullptr; // must be instantiate in runtime
-  QMediaPlayer *m_player = nullptr;
   PlaylistModel m_playlistModel;
   QList<PlaylistItem*> m_categoriesList;
+
+  QMediaPlayer *m_player = nullptr;
 
   bool m_isPlaying = false;
   bool m_isPlaylistIndexChanged = false;
@@ -56,9 +57,9 @@ private:
   int m_currentSelectedIndex = 0;
   int m_currentPlayedIndex = 0;
 
-  PlaylistItem* addCategory(const QString &title);
+  PlaylistItem* getCategory(const QVariant &categoryTitle);
+  bool addStationToPlaylist(const StationRecord &record);
 
-  void addRowToPlaylist(const StationRecord &stationRecord);
 //  void deleteRowFromPlaylist(int index);
 
 };

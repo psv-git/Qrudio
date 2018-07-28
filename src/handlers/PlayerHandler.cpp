@@ -7,27 +7,18 @@
 PlayerHandler::PlayerHandler(QObject *parent) : QObject(parent) {
   m_dataBaseHandler = new DataBaseHandler();
 
-  // get stations from database
-//  this->addRowToPlaylist(DataRecord("Radio title", "Radio url"));
-//  m_playlistModel.item(0, 0)->setSelectable(false);
-//  m_playlistModel.item(0, 0)->setTextAlignment(Qt::AlignHCenter);
-//  QVector<DataRecord*>* recordsList = m_dataBaseHandler->getRecordsList(DEFAULT_SETTINGS.stationsTableName);
-//  for (auto it = recordsList->begin(); it != recordsList->end(); it++) {
-//    if ((*it)->isValid()) this->addRowToPlaylist(**it);
-//  }
-  // TODO: sorting here
+  QList<StationRecord*>* stationsList = m_dataBaseHandler->getRecordsList();
+  for (auto it = stationsList->begin(); it != stationsList->end(); it++) {
+    if ((*it)->isValid()) this->addStationToPlaylist(**it);
+  }
+
+//  addStationToPlaylist(StationRecord("test1", "station11", "url11"));
+//  addStation(StationRecord("test2", "station2", "url2"));
+//  addStation(StationRecord("test3", "station3", "url3"));
+
 
   m_player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
   this->setVolume(0);
-
-  PlaylistItem *category = addCategory("test1");
-//  StationRecord *record = new StationRecord("", "station", "url");
-//  PlaylistItem *station = new PlaylistItem(record, category);
-//  category->addChild(station);
-  if (category) category->addChild(PlaylistItem(StationRecord("", "station", "url"), category));
-
-  addCategory("test2");
-  addCategory("test3");
 }
 
 
@@ -38,26 +29,31 @@ PlayerHandler::~PlayerHandler() {
 
 // public methods =============================================================
 
-bool PlayerHandler::addStation(const StationRecord &stationRecord) {
-//  if (!stationRecord.isValid()) return;
-//  if (m_dataBaseHandler->addRecord(dataRecord)) {
-//    this->addRowToPlaylist(dataRecord);
-//  }
-
+bool PlayerHandler::addStation(const StationRecord &record) {
+  if (!record.isValid()) return false;
+  int id = m_dataBaseHandler->addRecord(record);
+  if (id > 0) {
+    const_cast<StationRecord&>(record).setId(id);
+    this->addStationToPlaylist(record);
+    return true;
+  }
   return false;
 }
 
 
-bool PlayerHandler::deleteStation(const QModelIndex &index) {
-//  QString field = m_playlistModel.itemFromIndex(index.siblingAtColumn(0))->text();
-//  if (m_dataBaseHandler->deleteRecord(DataRecord(field, ""))) {
-//    this->deleteRowFromPlaylist(index.row());
-//  }
-  return false;
+bool PlayerHandler::deleteStation(const QModelIndex &itemIndex) {
+  PlaylistItem *item = m_playlistModel.getItemFromIndex(itemIndex);
+  QModelIndex parentIndex = m_playlistModel.parent(itemIndex);
+  if (m_playlistModel.deleteRow(itemIndex.row(), parentIndex)) {
+    if (!item->isRoot() && !item->isCategory()) {
+      return m_dataBaseHandler->deleteRecord(item->getData(2).toInt());
+    }
+  }
+  return true;
 }
 
 
-bool PlayerHandler::updateStation(const QModelIndex &index) {
+bool PlayerHandler::updateStation(const QModelIndex &itemIndex) {
 //  m_playlistModel.itemFromIndex(index)->child(0, 0)->text(); // get station name
   return false;
 }
@@ -144,23 +140,23 @@ void PlayerHandler::setVolume(int value) {
 
 // private methods ============================================================
 
-PlaylistItem* PlayerHandler::addCategory(const QString &categoryTitle) {
-  PlaylistItem *category = new PlaylistItem(categoryTitle);
-  if (m_playlistModel.addRow(category)) {
-    m_categoriesList.push_back(category);
-    return category;
-  } else {
-    return nullptr;
+PlaylistItem* PlayerHandler::getCategory(const QVariant &categoryTitle) {
+  for (int i = 0; i < m_categoriesList.size(); i++) {
+    if (m_categoriesList.at(i)->getData(0) == categoryTitle) {
+      return m_categoriesList.at(i);
+    }
   }
+  PlaylistItem *category = new PlaylistItem(categoryTitle);
+  if (!m_playlistModel.addRow(category)) return nullptr;
+  m_categoriesList.push_back(category);
+  return category;
 }
 
 
-void PlayerHandler::addRowToPlaylist(const StationRecord &dataRecord) {
-//  m_playlistModel.appendRow(row);
-//  m_playlistRowsCount++;
-
-//  PlaylistItem *station = new PlaylistItem(StationRecord(categoryTitle, "st", "url"), category);
-//  category->addChild(station);
+bool PlayerHandler::addStationToPlaylist(const StationRecord &record) {
+  PlaylistItem *category = getCategory(record.getCategoryTitle());
+  if (category) return category->addChild(PlaylistItem(record));
+  else return false;
 }
 
 

@@ -9,9 +9,9 @@ class PlaylistItem {
 
 public:
   PlaylistItem();
-  PlaylistItem(const QString &categoryTitle, const PlaylistItem *parent = nullptr);
-  PlaylistItem(const StationRecord &stationRecord, const PlaylistItem *parent = nullptr);
-  PlaylistItem(const StationRecord *stationRecord, const PlaylistItem *parent = nullptr);
+  PlaylistItem(const QVariant &categoryTitle, const PlaylistItem *parentItem = nullptr);
+  PlaylistItem(const StationRecord &record, const PlaylistItem *parentItem = nullptr);
+  PlaylistItem(const StationRecord *record, const PlaylistItem *parentItem = nullptr);
   PlaylistItem(const PlaylistItem &item);
   ~PlaylistItem();
 
@@ -20,26 +20,25 @@ public:
 
   PlaylistItem *getChild(int row) const;
 
-  bool addChild(const PlaylistItem &child);
-  bool addChild(const PlaylistItem *child);
+  bool addChild(const PlaylistItem &childItem);
+  bool addChild(const PlaylistItem *childItem);
   bool deleteChild(int row);
 
   int getChildCount() const;
   int getRowFor(const PlaylistItem *item = nullptr) const;
 
   PlaylistItem *getParent() const;
-  void setParent(const PlaylistItem *parent);
+  void setParent(const PlaylistItem *parentItem);
 
   QVariant getData(int column) const;
   bool setData(int column, const QVariant &value);
 
 private:
+  PlaylistItem *m_parentItem = nullptr;
+  QList<PlaylistItem*> m_childItemsList;
+
   bool m_isRoot = false;
   bool m_isCategory = false;
-
-  PlaylistItem *m_parent = nullptr;
-  QList<PlaylistItem*> m_childsList;
-
   QVariant m_title;
   QVariant m_url;
   QVariant m_id;

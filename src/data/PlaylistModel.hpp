@@ -10,26 +10,25 @@ class PlaylistModel : public QAbstractItemModel {
 Q_OBJECT
 
 public:
-  PlaylistModel();
+  explicit PlaylistModel(QObject *parent = nullptr);
   ~PlaylistModel();
 
-  QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-  bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+  QVariant data(const QModelIndex &itemIndex, int role) const override;
+  bool setData(const QModelIndex &itemIndex, const QVariant &value, int role) override;
 
-  QModelIndex index(int row, int column, const QModelIndex &index = QModelIndex()) const override;
-  QModelIndex parent(const QModelIndex &index) const override;
+  PlaylistItem *getItemFromIndex(const QModelIndex &itemIndex = QModelIndex()) const;
+  QModelIndex index(int row, int column, const QModelIndex &parentIndex) const override;
+  QModelIndex parent(const QModelIndex &itemIndex) const override;
 
-  bool addRow(const PlaylistItem &playlistItem, const QModelIndex &index = QModelIndex());
-  bool addRow(const PlaylistItem *playlistItem, const QModelIndex &index = QModelIndex());
-  bool deleteRow(int row, const QModelIndex &index = QModelIndex());
+  bool addRow(const PlaylistItem &item, const QModelIndex &parentIndex = QModelIndex());
+  bool addRow(const PlaylistItem *item, const QModelIndex &parentIndex = QModelIndex());
+  bool deleteRow(int row, const QModelIndex &parentIndex = QModelIndex());
 
-  int rowCount(const QModelIndex &index = QModelIndex()) const override;
-  int columnCount(const QModelIndex &index = QModelIndex()) const override;
+  int rowCount(const QModelIndex &itemIndex = QModelIndex()) const override;
+  int columnCount(const QModelIndex &itemIndex = QModelIndex()) const override;
 
 private:
   PlaylistItem *m_rootItem;
-
-  PlaylistItem *getItemFromIndex(const QModelIndex &index = QModelIndex()) const;
 
 };
 

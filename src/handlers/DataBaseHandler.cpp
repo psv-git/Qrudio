@@ -17,31 +17,32 @@ DataBaseHandler::DataBaseHandler() {
   m_query = new QSqlQuery();
 
   // create stations table if not exist
-  if (!sendQuery(QString("CREATE TABLE IF NOT EXISTS %1 (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category TEXT, title TEXT, url TEXT) WITHOUT ROWID;").arg(DEFAULT_SETTINGS.stationsTableName))) {
+  if (!sendQuery(QString("CREATE TABLE IF NOT EXISTS %1 (category TEXT, title TEXT, url TEXT);").arg(DEFAULT_SETTINGS.stationsTableName))) {
     ErrorHandler::getInstance().addErrorMessage(tr("Stations table was not created."));
   }
 }
 
 
 DataBaseHandler::~DataBaseHandler() {
+  clearRecordsList();
   if (m_query) delete m_query;
 }
 
 // public methods =============================================================
 
-bool DataBaseHandler::addRecord(const StationRecord &record) {
-  if (!record.isValid()) false;
-  if (!sendQuery(QString("INSERT INTO %1 (id, category, title, url) VALUES (NULL, '%2', '%3', '%4');").arg(DEFAULT_SETTINGS.stationsTableName).arg(record.getCategoryTitle()).arg(record.getStationTitle()).arg(record.getStationUrl()))) {
+int DataBaseHandler::addRecord(const StationRecord &record) {
+  if (!record.isValid()) return 0;
+  if (!sendQuery(QString("INSERT INTO %1 (rowid, category, title, url) VALUES (NULL, '%2', '%3', '%4');").arg(DEFAULT_SETTINGS.stationsTableName).arg(record.getCategoryTitle().toString()).arg(record.getStationTitle().toString()).arg(record.getStationUrl().toString()))) {
     ErrorHandler::getInstance().addErrorMessage(tr("Can't add data to the table."));
-    return false;
+    return 0;
   }
-  return true;
+  if (sendQuery("SELECT last_insert_rowid()")) return m_query->lastInsertId().toInt();
+  else return 0;
 }
 
 
-bool DataBaseHandler::deleteRecord(const StationRecord &record) {
-  if (!record.isValid()) false;
-  if (!sendQuery(QString("DELETE FROM %1 WHERE id = %2;").arg(DEFAULT_SETTINGS.stationsTableName).arg(record.getId()))) {
+bool DataBaseHandler::deleteRecord(int recordId) {
+  if (!sendQuery(QString("DELETE FROM %1 WHERE rowid = %2;").arg(DEFAULT_SETTINGS.stationsTableName).arg(recordId))) {
     ErrorHandler::getInstance().addErrorMessage(tr("Can't delete data from the table."));
     return false;
   }
@@ -61,12 +62,12 @@ bool DataBaseHandler::deleteRecord(const StationRecord &record) {
 
 QList<StationRecord*>* DataBaseHandler::getRecordsList() {
   clearRecordsList();
-  if (!sendQuery(QString("SELECT * FROM %1").arg(DEFAULT_SETTINGS.stationsTableName))) {
+  if (!sendQuery(QString("SELECT rowid, * FROM %1").arg(DEFAULT_SETTINGS.stationsTableName))) {
     ErrorHandler::getInstance().addErrorMessage(tr("Can't read information from the table."));
   } else {
     while (m_query->next()) {
       QSqlRecord rec = m_query->record();
-      m_recordsList.push_back(new StationRecord(rec.value(1).toString(), rec.value(2).toString(), rec.value(3).toString(), rec.value(0).toInt()));
+      m_recordsList.push_back(new StationRecord(rec.value(1), rec.value(2), rec.value(3), rec.value(0)));
     }
   }
   return &m_recordsList;
