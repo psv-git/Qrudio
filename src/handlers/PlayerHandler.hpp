@@ -25,18 +25,15 @@ public:
   explicit PlayerHandler(QObject *parent = nullptr);
   ~PlayerHandler();
 
-  bool addCategory(const QString &title);
-  bool deleteCategory(const QModelIndex &index);
-
   bool addStation(const StationRecord &stationRecord);
   bool deleteStation(const QModelIndex &index);
   bool updateStation(const QModelIndex &index);
 
-  PlaylistModel* getPlaylistModel();
-  bool isPlaylistEmpty();
+  PlaylistModel* getPlaylistModel() const;
+  bool isPlaylistEmpty() const;
 
-  int getSelectedIndex();
-  int getPlayedIndex();
+  int getSelectedIndex() const;
+  int getPlayedIndex() const;
   void setSelectedIndex(int index);
 
   void play();
@@ -49,17 +46,19 @@ public:
 private:
   DataBaseHandler *m_dataBaseHandler = nullptr; // must be instantiate in runtime
   QMediaPlayer *m_player = nullptr;
+  PlaylistModel m_playlistModel;
+  QList<PlaylistItem*> m_categoriesList;
 
   bool m_isPlaying = false;
   bool m_isPlaylistIndexChanged = false;
   int m_volume = 0;
-
-  PlaylistModel m_playlistModel;
   int m_playlistRowsCount = 0;
   int m_currentSelectedIndex = 0;
   int m_currentPlayedIndex = 0;
 
-//  void addRowToPlaylist(const StationRecord &stationRecord);
+  PlaylistItem* addCategory(const QString &title);
+
+  void addRowToPlaylist(const StationRecord &stationRecord);
 //  void deleteRowFromPlaylist(int index);
 
 };

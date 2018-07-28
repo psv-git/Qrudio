@@ -9,21 +9,22 @@
 #include "StationRecord.hpp"
 
 
-class DataBaseHandler {
+class DataBaseHandler : public QObject {
+Q_OBJECT
 
 public:
   explicit DataBaseHandler();
   ~DataBaseHandler();
 
-  bool addRecord(const QString &tableName, const StationRecord &record);
-  bool deleteRecord(const QString &tableName, const StationRecord &record);
-  bool updateRecord(const QString &tableName, const StationRecord &record);
-  QVector<StationRecord*>* getRecordsList(const QString &tableName);
+  bool addRecord(const StationRecord &record);
+  bool deleteRecord(const StationRecord &record);
+//  bool updateRecord(const StationRecord &record);
+  QList<StationRecord*>* getRecordsList();
 
 private:
   QSqlDatabase m_dataBase;
   QSqlQuery *m_query = nullptr; // must be created after database init
-  QVector<StationRecord*> m_recordsList;
+  QList<StationRecord*> m_recordsList;
 
   bool sendQuery(const QString &queryString);
   void clearRecordsList();

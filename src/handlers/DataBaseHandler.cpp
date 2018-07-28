@@ -10,15 +10,15 @@ DataBaseHandler::DataBaseHandler() {
   // open database
   m_dataBase.setDatabaseName(GetHomePath() + DEFAULT_SETTINGS.dataBasePath);
   if (!m_dataBase.open()) {
-    ErrorHandler::getInstance().addErrorMessage("Data base was not open.");
+    ErrorHandler::getInstance().addErrorMessage(tr("Data base was not open."));
   }
 
   // create query
   m_query = new QSqlQuery();
 
   // create stations table if not exist
-  if (!sendQuery(QString("CREATE TABLE IF NOT EXISTS %1 (field TEXT PRIMARY KEY, value TEXT) WITHOUT ROWID;").arg(DEFAULT_SETTINGS.stationsTableName))) {
-    ErrorHandler::getInstance().addErrorMessage("Stations table was not created.");
+  if (!sendQuery(QString("CREATE TABLE IF NOT EXISTS %1 (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category TEXT, title TEXT, url TEXT) WITHOUT ROWID;").arg(DEFAULT_SETTINGS.stationsTableName))) {
+    ErrorHandler::getInstance().addErrorMessage(tr("Stations table was not created."));
   }
 }
 
@@ -29,44 +29,44 @@ DataBaseHandler::~DataBaseHandler() {
 
 // public methods =============================================================
 
-bool DataBaseHandler::addRecord(const QString &tableName, const StationRecord &record) {
+bool DataBaseHandler::addRecord(const StationRecord &record) {
   if (!record.isValid()) false;
-  if (!sendQuery(QString("INSERT INTO %1 (field, value) VALUES ('%2', '%3');").arg(tableName).arg(record.getStationTitle()).arg(record.getStationUrl()))) {
-    ErrorHandler::getInstance().addErrorMessage("Can't add data to the table.");
+  if (!sendQuery(QString("INSERT INTO %1 (id, category, title, url) VALUES (NULL, '%2', '%3', '%4');").arg(DEFAULT_SETTINGS.stationsTableName).arg(record.getCategoryTitle()).arg(record.getStationTitle()).arg(record.getStationUrl()))) {
+    ErrorHandler::getInstance().addErrorMessage(tr("Can't add data to the table."));
     return false;
   }
   return true;
 }
 
 
-bool DataBaseHandler::deleteRecord(const QString &tableName, const StationRecord &record) {
+bool DataBaseHandler::deleteRecord(const StationRecord &record) {
   if (!record.isValid()) false;
-  if (!sendQuery(QString("DELETE FROM %1 WHERE field = '%2';").arg(tableName).arg(record.getStationTitle()))) {
-    ErrorHandler::getInstance().addErrorMessage("Can't delete data from the table.");
+  if (!sendQuery(QString("DELETE FROM %1 WHERE id = %2;").arg(DEFAULT_SETTINGS.stationsTableName).arg(record.getId()))) {
+    ErrorHandler::getInstance().addErrorMessage(tr("Can't delete data from the table."));
     return false;
   }
   return true;
 }
 
 
-bool DataBaseHandler::updateRecord(const QString &tableName, const StationRecord &record) {
-  if (!record.isValid()) false;
-  if (!sendQuery(QString("UPDATE %1 SET value = '%3' WHERE field = '%2';").arg(tableName).arg(record.getStationTitle()).arg(record.getStationUrl()))) {
-    ErrorHandler::getInstance().addErrorMessage("Can't update data in the table.");
-    return false;
-  }
-  return true;
-}
+//bool DataBaseHandler::updateRecord(const StationRecord &record) {
+//  if (!record.isValid()) false;
+//  if (!sendQuery(QString("UPDATE %1 SET value = '%3' WHERE field = '%2';").arg(tableName).arg(record.getStationTitle()).arg(record.getStationUrl()))) {
+//    ErrorHandler::getInstance().addErrorMessage("Can't update data in the table.");
+//    return false;
+//  }
+//  return true;
+//}
 
 
-QVector<StationRecord*>* DataBaseHandler::getRecordsList(const QString &tableName) {
+QList<StationRecord*>* DataBaseHandler::getRecordsList() {
   clearRecordsList();
-  if (!sendQuery(QString("SELECT * FROM %1").arg(tableName))) {
-    ErrorHandler::getInstance().addErrorMessage("Can't read information from the table.");
+  if (!sendQuery(QString("SELECT * FROM %1").arg(DEFAULT_SETTINGS.stationsTableName))) {
+    ErrorHandler::getInstance().addErrorMessage(tr("Can't read information from the table."));
   } else {
     while (m_query->next()) {
       QSqlRecord rec = m_query->record();
-      m_recordsList.push_back(new StationRecord("", rec.value(0).toString(), rec.value(1).toString()));
+      m_recordsList.push_back(new StationRecord(rec.value(1).toString(), rec.value(2).toString(), rec.value(3).toString(), rec.value(0).toInt()));
     }
   }
   return &m_recordsList;

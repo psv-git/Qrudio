@@ -11,14 +11,15 @@ class StationRecord {
 
 public:
   StationRecord();
-  StationRecord(const QString &categoryTitle, const QString &stationTitle, const QString &stationUrl);
+  StationRecord(const QString &categoryTitle, const QString &stationTitle, const QString &stationUrl, int id = 0);
   ~StationRecord();
 
   bool isValid() const;
 
-  const QString getCategoryTitle() const;
-  const QString getStationTitle() const;
-  const QString getStationUrl() const;
+  int getId() const;
+  const QString& getCategoryTitle() const;
+  const QString& getStationTitle() const;
+  const QString& getStationUrl() const;
 
 private:
   bool m_isValid = false;
@@ -26,6 +27,7 @@ private:
   QString m_categoryTitle;
   QString m_stationTitle;
   QString m_stationUrl;
+  int m_id = -1;
 
 };
 

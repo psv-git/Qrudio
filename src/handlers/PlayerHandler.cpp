@@ -20,7 +20,12 @@ PlayerHandler::PlayerHandler(QObject *parent) : QObject(parent) {
   m_player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
   this->setVolume(0);
 
-  addCategory("test1");
+  PlaylistItem *category = addCategory("test1");
+//  StationRecord *record = new StationRecord("", "station", "url");
+//  PlaylistItem *station = new PlaylistItem(record, category);
+//  category->addChild(station);
+  if (category) category->addChild(PlaylistItem(StationRecord("", "station", "url"), category));
+
   addCategory("test2");
   addCategory("test3");
 }
@@ -33,22 +38,9 @@ PlayerHandler::~PlayerHandler() {
 
 // public methods =============================================================
 
-bool PlayerHandler::addCategory(const QString &categoryTitle) {
-  PlaylistItem *category = new PlaylistItem(categoryTitle);
-  PlaylistItem *station = new PlaylistItem(StationRecord(categoryTitle, "st", "url"), category);
-  category->addChild(station);
-  return m_playlistModel.addRow(*category);
-}
-
-
-bool PlayerHandler::deleteCategory(const QModelIndex &index) {
-  return false;
-}
-
-
 bool PlayerHandler::addStation(const StationRecord &stationRecord) {
 //  if (!stationRecord.isValid()) return;
-//  if (m_dataBaseHandler->addRecord(DEFAULT_SETTINGS.stationsTableName, dataRecord)) {
+//  if (m_dataBaseHandler->addRecord(dataRecord)) {
 //    this->addRowToPlaylist(dataRecord);
 //  }
 
@@ -58,7 +50,7 @@ bool PlayerHandler::addStation(const StationRecord &stationRecord) {
 
 bool PlayerHandler::deleteStation(const QModelIndex &index) {
 //  QString field = m_playlistModel.itemFromIndex(index.siblingAtColumn(0))->text();
-//  if (m_dataBaseHandler->deleteRecord(DEFAULT_SETTINGS.stationsTableName, DataRecord(field, ""))) {
+//  if (m_dataBaseHandler->deleteRecord(DataRecord(field, ""))) {
 //    this->deleteRowFromPlaylist(index.row());
 //  }
   return false;
@@ -71,22 +63,22 @@ bool PlayerHandler::updateStation(const QModelIndex &index) {
 }
 
 
-PlaylistModel* PlayerHandler::getPlaylistModel() {
-  return &m_playlistModel;
+PlaylistModel* PlayerHandler::getPlaylistModel() const {
+  return const_cast<PlaylistModel*>(&m_playlistModel);
 }
 
 
-bool PlayerHandler::isPlaylistEmpty() {
+bool PlayerHandler::isPlaylistEmpty() const {
   return m_playlistRowsCount < 1;
 }
 
 
-int PlayerHandler::getSelectedIndex() {
+int PlayerHandler::getSelectedIndex() const {
   return m_currentSelectedIndex;
 }
 
 
-int PlayerHandler::getPlayedIndex() {
+int PlayerHandler::getPlayedIndex() const {
   return m_currentPlayedIndex;
 }
 
@@ -152,11 +144,24 @@ void PlayerHandler::setVolume(int value) {
 
 // private methods ============================================================
 
-//void PlayerHandler::addRowToPlaylist(const DataRecord &dataRecord) {
-//  QList<QStandardItem*> row = { new QStandardItem(dataRecord.getField()), new QStandardItem(dataRecord.getValue().toString()) };
+PlaylistItem* PlayerHandler::addCategory(const QString &categoryTitle) {
+  PlaylistItem *category = new PlaylistItem(categoryTitle);
+  if (m_playlistModel.addRow(category)) {
+    m_categoriesList.push_back(category);
+    return category;
+  } else {
+    return nullptr;
+  }
+}
+
+
+void PlayerHandler::addRowToPlaylist(const StationRecord &dataRecord) {
 //  m_playlistModel.appendRow(row);
 //  m_playlistRowsCount++;
-//}
+
+//  PlaylistItem *station = new PlaylistItem(StationRecord(categoryTitle, "st", "url"), category);
+//  category->addChild(station);
+}
 
 
 //void PlayerHandler::deleteRowFromPlaylist(int index) {

@@ -17,14 +17,15 @@ QVariant PlaylistModel::data(const QModelIndex &index, int role) const {
   if (role != Qt::DisplayRole && role != Qt::EditRole) return QVariant();
 
   PlaylistItem *item = this->getItemFromIndex(index);
-  return QVariant(item->getData(index.column()));
+  return item->getData(index.column());
 }
 
 
 bool PlaylistModel::setData(const QModelIndex &index, const QVariant &value, int role) {
   if (role != Qt::EditRole) return false;
+
   PlaylistItem *item = this->getItemFromIndex(index);
-  if (item->setData(index.column(), value.toString())) {
+  if (item->setData(index.column(), value)) {
     emit this->dataChanged(index, index);
     return true;
   }
@@ -34,6 +35,7 @@ bool PlaylistModel::setData(const QModelIndex &index, const QVariant &value, int
 
 QModelIndex PlaylistModel::index(int row, int column, const QModelIndex &index) const {
   if (!hasIndex(row, column, index)) return QModelIndex();
+
   PlaylistItem *parent = m_rootItem;
   if (index.isValid()) parent = static_cast<PlaylistItem*>(index.internalPointer());
   PlaylistItem *child = parent->getChild(row);
@@ -44,6 +46,7 @@ QModelIndex PlaylistModel::index(int row, int column, const QModelIndex &index) 
 
 QModelIndex PlaylistModel::parent(const QModelIndex &index) const {
   if (!index.isValid()) return QModelIndex();
+
   PlaylistItem *child = getItemFromIndex(index);
   PlaylistItem *parent = child->getParent();
   if (!parent || parent == m_rootItem) return QModelIndex();
@@ -62,14 +65,19 @@ int PlaylistModel::columnCount(const QModelIndex &index) const {
 }
 
 
-bool PlaylistModel::addRow(PlaylistItem &playlistItem, const QModelIndex &index) {
-  PlaylistItem *parent = getItemFromIndex(index);
-  return parent->addChild(&playlistItem);
+bool PlaylistModel::addRow(const PlaylistItem &item, const QModelIndex &index) {
+  return this->addRow(new PlaylistItem(item), index);
+}
+
+
+bool PlaylistModel::addRow(const PlaylistItem *item, const QModelIndex &index) {
+  PlaylistItem *parent = this->getItemFromIndex(index);
+  return parent->addChild(item);
 }
 
 
 bool PlaylistModel::deleteRow(int row, const QModelIndex &index) {
-  PlaylistItem *parent = getItemFromIndex(index);
+  PlaylistItem *parent = this->getItemFromIndex(index);
   return parent->deleteChild(row);
 }
 

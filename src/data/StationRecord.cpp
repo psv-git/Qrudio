@@ -7,15 +7,13 @@
 StationRecord::StationRecord() {}
 
 
-StationRecord::StationRecord(const QString &categoryTitle, const QString &stationTitle, const QString &stationUrl) {
-  m_categoryTitle = categoryTitle;
-  m_stationTitle = stationTitle;
-  m_stationUrl = stationUrl;
-  if (!m_stationTitle.isEmpty()) {
-   if (!m_stationUrl.isEmpty()) {
-     // TODO: check url on valid
-     m_isValid = true;
-   }
+StationRecord::StationRecord(const QString &categoryTitle, const QString &stationTitle, const QString &stationUrl, int id) {
+  if (!stationTitle.isEmpty() && !stationUrl.isEmpty()) {
+    m_id = id;
+    m_categoryTitle = categoryTitle;
+    m_stationTitle = stationTitle;
+    m_stationUrl = stationUrl;
+    m_isValid = true;
   }
 }
 
@@ -29,16 +27,21 @@ bool StationRecord::isValid() const {
 }
 
 
-const QString StationRecord::getCategoryTitle() const {
+int StationRecord::getId() const {
+  return m_id;
+}
+
+
+const QString& StationRecord::getCategoryTitle() const {
   return m_categoryTitle;
 }
 
 
-const QString StationRecord::getStationTitle() const {
+const QString& StationRecord::getStationTitle() const {
   return m_stationTitle;
 }
 
 
-const QString StationRecord::getStationUrl() const {
+const QString& StationRecord::getStationUrl() const {
   return m_stationUrl;
 }

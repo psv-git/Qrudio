@@ -11,11 +11,17 @@ public:
   PlaylistItem();
   PlaylistItem(const QString &categoryTitle, const PlaylistItem *parent = nullptr);
   PlaylistItem(const StationRecord &stationRecord, const PlaylistItem *parent = nullptr);
+  PlaylistItem(const StationRecord *stationRecord, const PlaylistItem *parent = nullptr);
+  PlaylistItem(const PlaylistItem &item);
   ~PlaylistItem();
+
+  bool isRoot() const;
+  bool isCategory() const;
 
   PlaylistItem *getChild(int row) const;
 
-  bool addChild(PlaylistItem *child);
+  bool addChild(const PlaylistItem &child);
+  bool addChild(const PlaylistItem *child);
   bool deleteChild(int row);
 
   int getChildCount() const;
@@ -24,8 +30,8 @@ public:
   PlaylistItem *getParent() const;
   void setParent(const PlaylistItem *parent);
 
-  QString getData(int column) const;
-  bool setData(int column, const QString &value);
+  QVariant getData(int column) const;
+  bool setData(int column, const QVariant &value);
 
 private:
   bool m_isRoot = false;
@@ -34,8 +40,9 @@ private:
   PlaylistItem *m_parent = nullptr;
   QList<PlaylistItem*> m_childsList;
 
-  QString m_title;
-  QString m_url;
+  QVariant m_title;
+  QVariant m_url;
+  QVariant m_id;
 
 };
 

@@ -19,7 +19,8 @@ public:
   QModelIndex index(int row, int column, const QModelIndex &index = QModelIndex()) const override;
   QModelIndex parent(const QModelIndex &index) const override;
 
-  bool addRow(PlaylistItem &playlistItem, const QModelIndex &index = QModelIndex());
+  bool addRow(const PlaylistItem &playlistItem, const QModelIndex &index = QModelIndex());
+  bool addRow(const PlaylistItem *playlistItem, const QModelIndex &index = QModelIndex());
   bool deleteRow(int row, const QModelIndex &index = QModelIndex());
 
   int rowCount(const QModelIndex &index = QModelIndex()) const override;
