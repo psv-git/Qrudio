@@ -123,7 +123,7 @@ QTabBar:tab:selected {
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="iconSize">
      <size>
@@ -870,7 +870,7 @@ QPushButton:disabled {
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>45</y>
+        <y>80</y>
         <width>250</width>
         <height>25</height>
        </rect>
@@ -921,7 +921,7 @@ QLineEdit::disabled {
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>80</y>
+        <y>115</y>
         <width>250</width>
         <height>25</height>
        </rect>
@@ -972,7 +972,7 @@ QLineEdit::disabled {
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>115</y>
+        <y>10</y>
         <width>40</width>
         <height>25</height>
        </rect>
@@ -1018,12 +1018,12 @@ QPushButton:disabled {
      </widget>
      <widget class="QPushButton" name="deleteStationButton">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>115</y>
+        <x>220</x>
+        <y>10</y>
         <width>40</width>
         <height>25</height>
        </rect>
@@ -1067,8 +1067,8 @@ QPushButton:disabled {
       </property>
       <property name="geometry">
        <rect>
-        <x>220</x>
-        <y>115</y>
+        <x>170</x>
+        <y>10</y>
         <width>40</width>
         <height>25</height>
        </rect>
@@ -1113,7 +1113,7 @@ QPushButton:disabled {
       <property name="geometry">
        <rect>
         <x>110</x>
-        <y>115</y>
+        <y>10</y>
         <width>40</width>
         <height>25</height>
        </rect>
@@ -1158,7 +1158,7 @@ QPushButton:disabled {
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>115</y>
+        <y>10</y>
         <width>40</width>
         <height>25</height>
        </rect>
@@ -1202,14 +1202,14 @@ QPushButton:disabled {
        </size>
       </property>
      </widget>
-     <widget class="QLineEdit" name="stationNameEdit_2">
+     <widget class="QLineEdit" name="categoryEdit">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>10</y>
+        <y>45</y>
         <width>250</width>
         <height>25</height>
        </rect>

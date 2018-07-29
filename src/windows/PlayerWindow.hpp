@@ -34,7 +34,7 @@ private slots:
   void onSaveStationButtonRelease();
   void onThemeButtonRelease();
   void onRunOnTrayBoxClick(bool checked);
-  void onStationRowClick(const QModelIndex &index);
+  void onPlaylistRowClick(const QModelIndex &index);
   void onStationRowDoubleClick(const QModelIndex &index);
   void onTrayIconClick(QSystemTrayIcon::ActivationReason r);
   void onVolumeSliderChange(int value);
@@ -47,18 +47,19 @@ private:
 
   bool m_isPlay = false;
   bool m_isExit = false;
-  bool m_isTrayWasClicked = false;
   bool m_isMuted = true;
   bool m_isRunOnTray = false;
+  bool m_isCategory = false;
+  bool m_isTrayWasClicked = false;
   int m_volume = 0;
   QString m_iconsPath;
-  EDIT m_editState = EDIT::NONE;
   THEME m_themeColor = THEME::NONE;
+  EDIT m_editState = EDIT::NONE;
 
   void setThemeColor(THEME themeColor);
   void setTrayIcon();
   void playback(PLAYBACK playbackState);
-  void toggleEditButtons();
+  void toggleEditState();
 
 };
 

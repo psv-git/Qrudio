@@ -32,9 +32,9 @@ public:
   PlaylistModel* getPlaylistModel() const;
   bool isPlaylistEmpty() const;
 
-  int getSelectedIndex() const;
-  int getPlayedIndex() const;
-  void setSelectedIndex(int index);
+  const QModelIndex& getSelectedIndex() const;
+  const QModelIndex& getPlayedIndex() const;
+  void setSelectedIndex(const QModelIndex &index);
 
   void play();
   void playPrev();
@@ -46,7 +46,7 @@ public:
 private:
   DataBaseHandler *m_dataBaseHandler = nullptr; // must be instantiate in runtime
   PlaylistModel m_playlistModel;
-  QList<PlaylistItem*> m_categoriesList;
+  QMap<PlaylistItem*, QModelIndex> m_categoriesMap;
 
   QMediaPlayer *m_player = nullptr;
 
@@ -54,13 +54,12 @@ private:
   bool m_isPlaylistIndexChanged = false;
   int m_volume = 0;
   int m_playlistRowsCount = 0;
-  int m_currentSelectedIndex = 0;
-  int m_currentPlayedIndex = 0;
+  QModelIndex m_currentSelectedIndex;
+  QModelIndex m_currentPlayedIndex;
 
-  PlaylistItem* getCategory(const QVariant &categoryTitle);
+  QModelIndex getCategoryIndex(const QVariant &categoryTitle);
   bool addStationToPlaylist(const StationRecord &record);
-
-//  void deleteRowFromPlaylist(int index);
+  bool deleteStationFromPlaylist(int id, int row, const QModelIndex &parentIndex);
 
 };
 

@@ -15,10 +15,10 @@
    stroke-width="2"
    stroke-linecap="round"
    stroke-linejoin="round"
-   class="feather feather-x"
+   class="feather feather-trash"
    version="1.1"
    id="svg6"
-   sodipodi:docname="delete.svg"
+   sodipodi:docname="trash.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)">
   <metadata
      id="metadata12">
@@ -47,24 +47,20 @@
      id="namedview8"
      showgrid="false"
      inkscape:zoom="27.812867"
-     inkscape:cx="10.768714"
-     inkscape:cy="11.321397"
+     inkscape:cx="8.8445392"
+     inkscape:cy="12.508187"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg6" />
-  <line
-     x1="20.989899"
-     y1="3.0058022"
-     x2="3.0101001"
-     y2="20.989901"
-     id="line2"
-     style="stroke-width:2;fill:#000000;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-linejoin:round;stroke-linecap:round" />
-  <line
-     x1="3.0101013"
-     y1="3.0101013"
-     x2="20.994198"
-     y2="20.989901"
-     id="line4"
-     style="stroke-width:2;fill:#000000;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round" />
+  <polyline
+     points="3 6 5 6 21 6"
+     id="polyline2"
+     transform="matrix(0.99843376,0,0,0.99843376,0.01879488,0.60929746)"
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.00313735;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <path
+     d="M 19,6.6 V 19.2 A 2,1.8 0 0 1 17,21 H 7 A 2,1.8 0 0 1 5,19.2 V 6.6 m 3,0 V 4.8 A 2,1.8 0 0 1 10,3 h 4 a 2,1.8 0 0 1 2,1.8 v 1.8"
+     id="path4"
+     inkscape:connector-curvature="0"
+     style="stroke-width:2" />
 </svg>

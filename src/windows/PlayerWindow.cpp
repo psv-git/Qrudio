@@ -61,6 +61,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
 
 //  connect(m_ui->stationsTreeView, SIGNAL(clicked(QModelIndex)), this, SLOT(onStationRowClick(QModelIndex)));
 //  connect(m_ui->stationsTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onStationRowDoubleClick(QModelIndex)));
+  connect(m_ui->stationsTreeView, SIGNAL(clicked(QModelIndex)), this, SLOT(onPlaylistRowClick(QModelIndex)));
 
   connect(m_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onTrayIconClick(QSystemTrayIcon::ActivationReason)));
 }
@@ -146,30 +147,25 @@ void PlayerWindow::onSearchButtonRelease() {
 void PlayerWindow::onEditButtonRelease() {
   if (sender() == m_ui->addPlaylistButton) {
     QString plylistPath = GetFilePath(tr("Choose file"), tr("Playlist extensions (*.m3u *.m3u8)"));
-    // addPlaylist(playlistPath);
+    // m_playerHandler->addPlaylist(playlistPath);
   } else {
     if (sender() == m_ui->addStationButton) {
       (m_editState == EDIT::ADD) ? m_editState = EDIT::NONE : m_editState = EDIT::ADD;
     } else if (sender() == m_ui->editStationButton) {
       (m_editState == EDIT::EDIT) ? m_editState = EDIT::NONE : m_editState = EDIT::EDIT;
     } else if (sender() == m_ui->deleteStationButton) {
-      (m_editState == EDIT::DELETE) ? m_editState = EDIT::NONE : m_editState = EDIT::DELETE;
+      m_playerHandler->deleteStation(m_ui->stationsTreeView->currentIndex());
     }
-    toggleEditButtons();
+    toggleEditState();
   }
 }
 
 
 void PlayerWindow::onSaveStationButtonRelease() {
-  if (m_editState == EDIT::ADD) {
-//    m_playerHandler->addStation(DataRecord(m_ui->stationNameEdit->text(), m_ui->stationUrlEdit->text()));
-//    if (m_playerHandler->getSelectedIndex() == 1) m_ui->stationsTreeView->hideColumn(1);
-  } else {
-//    if (m_editState == EDIT::EDIT) m_playerHandler->updateStation(m_ui->stationsTreeView->currentIndex());
-//    else if (m_editState == EDIT::DELETE) m_playerHandler->deleteStation(m_ui->stationsTreeView->currentIndex());
-  }
+  if (m_editState == EDIT::ADD) m_playerHandler->addStation(StationRecord(m_ui->categoryEdit->text(), m_ui->stationNameEdit->text(), m_ui->stationUrlEdit->text()));
+
   m_editState = EDIT::NONE;
-  toggleEditButtons();
+  toggleEditState();
 }
 
 
@@ -187,12 +183,28 @@ void PlayerWindow::onRunOnTrayBoxClick(bool checked) {
 }
 
 
-void PlayerWindow::onStationRowClick(const QModelIndex &index) {
-  m_playerHandler->setSelectedIndex(index.row());
-  if (m_ui->editTab->isVisible()) {
+void PlayerWindow::onPlaylistRowClick(const QModelIndex &index) {
+  m_playerHandler->setSelectedIndex(index);
+
+  // edit section
+  if (!m_ui->editTab->isVisible()) return;
+  if (m_editState == EDIT::NONE) {
+    m_ui->deleteStationButton->setEnabled(true);
+    return;
+  }
+
+  m_isCategory = static_cast<PlaylistItem*>(index.internalPointer())->isCategory();
+  if (m_isCategory) {
+    m_ui->categoryEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
     if (m_editState == EDIT::EDIT || m_editState == EDIT::DELETE) {
-//      m_ui->stationNameEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
-//      m_ui->stationUrlEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(1)).toString());
+      m_ui->stationNameEdit->clear();
+      m_ui->stationUrlEdit->clear();
+    }
+  } else {
+    m_ui->categoryEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->model()->parent(index).siblingAtColumn(0)).toString());
+    if (m_editState == EDIT::EDIT || m_editState == EDIT::DELETE) {
+      m_ui->stationNameEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
+      m_ui->stationUrlEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(1)).toString());
     }
   }
 }
@@ -245,9 +257,9 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
   // tabs icons
   QIcon icon = QIcon::fromTheme("media-playback-start", QIcon(m_iconsPath + "radio.svg"));
   m_ui->tabWidget->setTabIcon(0, TransformIcon(icon, 22, 22, 90));
-  icon = QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit-1.svg"));
+  icon = QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit.svg"));
   m_ui->tabWidget->setTabIcon(1, TransformIcon(icon, 22, 22, 90));
-  icon = QIcon::fromTheme("configure", QIcon(m_iconsPath + "settings.svg"));
+  icon = QIcon::fromTheme("configure", QIcon(m_iconsPath + "config.svg"));
   m_ui->tabWidget->setTabIcon(2, TransformIcon(icon, 22, 22, 90));
 
   // buttons icons
@@ -257,10 +269,10 @@ void PlayerWindow::setThemeColor(THEME themeColor) {
   m_ui->stopButton->setIcon(QIcon::fromTheme("media-playback-stop", QIcon(m_iconsPath + "stop.svg")));
   m_ui->recordButton->setIcon(QIcon::fromTheme("media-record", QIcon(m_iconsPath + "record.svg")));
   m_ui->searchButton->setIcon(QIcon::fromTheme("search", QIcon(m_iconsPath + "search.svg")));
-  m_ui->addPlaylistButton->setIcon(QIcon::fromTheme("list-add", QIcon(m_iconsPath + "add-1.svg")));
-  m_ui->addStationButton->setIcon(QIcon::fromTheme("list-add", QIcon(m_iconsPath + "add-2.svg")));
+  m_ui->addPlaylistButton->setIcon(QIcon::fromTheme("list-add", QIcon(m_iconsPath + "add-playlist.svg")));
+  m_ui->addStationButton->setIcon(QIcon::fromTheme("add", QIcon(m_iconsPath + "add-station.svg")));
   m_ui->deleteStationButton->setIcon(QIcon::fromTheme("edit-delete", QIcon(m_iconsPath + "delete.svg")));
-  m_ui->editStationButton->setIcon(QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit-2.svg")));
+  m_ui->editStationButton->setIcon(QIcon::fromTheme("document-edit", QIcon(m_iconsPath + "edit-row.svg")));
   m_ui->saveStationButton->setIcon(QIcon::fromTheme("document-save", QIcon(m_iconsPath + "save.svg")));
 
   setTrayIcon();
@@ -306,19 +318,21 @@ void PlayerWindow::playback(PLAYBACK playbackState) {
 
 // ----------------------------------------------------------------------------
 
-void PlayerWindow::toggleEditButtons() {
+void PlayerWindow::toggleEditState() {
   if (m_editState == EDIT::EDIT || m_editState == EDIT::DELETE) {
 //    m_ui->stationNameEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->currentIndex().siblingAtColumn(0)).toString());
 //    m_ui->stationUrlEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->currentIndex().siblingAtColumn(1)).toString());
   } else {
+    m_ui->categoryEdit->clear();
     m_ui->stationNameEdit->clear();
     m_ui->stationUrlEdit->clear();
   }
+  m_ui->categoryEdit->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::EDIT);
   m_ui->stationNameEdit->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::EDIT);
   m_ui->stationUrlEdit->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::EDIT);
-  m_ui->addPlaylistButton->setEnabled(!m_ui->addPlaylistButton->isEnabled());
+  m_ui->addPlaylistButton->setEnabled(m_editState == EDIT::NONE);
   m_ui->addStationButton->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::NONE);
   m_ui->editStationButton->setEnabled(m_editState == EDIT::EDIT || m_editState == EDIT::NONE);
-  m_ui->deleteStationButton->setEnabled(m_editState == EDIT::DELETE || m_editState == EDIT::NONE);
-  m_ui->saveStationButton->setEnabled(!m_ui->saveStationButton->isEnabled());
+  m_ui->saveStationButton->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::EDIT);
+  m_ui->deleteStationButton->setEnabled(false);
 }

@@ -43,7 +43,6 @@ PlaylistItem::~PlaylistItem() {
   for (int i = 0; i < m_childItemsList.size(); i++) {
     delete m_childItemsList.at(i);
   }
-  m_childItemsList.clear();
 }
 
 // public methods =============================================================
@@ -118,9 +117,6 @@ QVariant PlaylistItem::getData(int column) const {
   if (column == 0) return m_title;
   else if (column == 1) return m_url;
   else if (column == 2) return m_id;
-  else if (column == 3) {
-    if (!this->isRoot() && !this->isCategory() && m_parentItem) return m_parentItem->getData(0);
-  }
   return QVariant();
 }
 

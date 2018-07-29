@@ -16,7 +16,7 @@ QVariant PlaylistModel::data(const QModelIndex &itemIndex, int role) const {
   if (!itemIndex.isValid()) return QVariant();
   if (role != Qt::DisplayRole && role != Qt::EditRole) return QVariant();
 
-  PlaylistItem *item = this->getItemFromIndex(itemIndex);
+  PlaylistItem *item = this->item(itemIndex);
   return item->getData(itemIndex.column());
 }
 
@@ -24,7 +24,7 @@ QVariant PlaylistModel::data(const QModelIndex &itemIndex, int role) const {
 bool PlaylistModel::setData(const QModelIndex &itemIndex, const QVariant &value, int role) {
   if (role != Qt::EditRole) return false;
 
-  PlaylistItem *item = this->getItemFromIndex(itemIndex);
+  PlaylistItem *item = this->item(itemIndex);
   if (item->setData(itemIndex.column(), value)) {
     emit this->dataChanged(itemIndex, itemIndex);
     return true;
@@ -33,7 +33,7 @@ bool PlaylistModel::setData(const QModelIndex &itemIndex, const QVariant &value,
 }
 
 
-PlaylistItem* PlaylistModel::getItemFromIndex(const QModelIndex &itemIndex) const {
+PlaylistItem* PlaylistModel::item(const QModelIndex &itemIndex) const {
   if (itemIndex.isValid()) {
     PlaylistItem *item = static_cast<PlaylistItem*>(itemIndex.internalPointer());
     if (item) return item;
@@ -56,36 +56,48 @@ QModelIndex PlaylistModel::index(int row, int column, const QModelIndex &parentI
 QModelIndex PlaylistModel::parent(const QModelIndex &itemIndex) const {
   if (!itemIndex.isValid()) return QModelIndex();
 
-  PlaylistItem *child = getItemFromIndex(itemIndex);
+  PlaylistItem *child = item(itemIndex);
   PlaylistItem *parent = child->getParent();
   if (!parent || parent == m_rootItem) return QModelIndex();
   else return this->createIndex(parent->getRowFor(), 0, parent);
 }
 
 
-bool PlaylistModel::addRow(const PlaylistItem &item, const QModelIndex &parentIndex) {
+QModelIndex PlaylistModel::addRow(const PlaylistItem &item, const QModelIndex &parentIndex) {
   return this->addRow(new PlaylistItem(item), parentIndex);
 }
 
 
-bool PlaylistModel::addRow(const PlaylistItem *item, const QModelIndex &parentIndex) {
-  PlaylistItem *parent = this->getItemFromIndex(parentIndex);
-  return parent->addChild(item);
+QModelIndex PlaylistModel::addRow(const PlaylistItem *item, const QModelIndex &parentIndex) {
+  PlaylistItem *parent = this->item(parentIndex);
+  int row = parent->getChildCount();
+  QModelIndex itemIndex;
+
+  this->beginInsertRows(parentIndex, row, row);
+  if (parent->addChild(item)) itemIndex = this->index(row, 0, parentIndex);
+  this->endInsertRows();
+
+  return itemIndex;
 }
 
 
 bool PlaylistModel::deleteRow(int row, const QModelIndex &parentIndex) {
-  PlaylistItem *parent = this->getItemFromIndex(parentIndex);
-  return parent->deleteChild(row);
+  PlaylistItem *parent = this->item(parentIndex);
+
+  this->beginRemoveRows(parentIndex, row, row);
+  bool success = parent->deleteChild(row);
+  this->endRemoveRows();
+
+  return success;
 }
 
 
 int PlaylistModel::rowCount(const QModelIndex &itemIndex) const {
-  PlaylistItem *parent = this->getItemFromIndex(itemIndex);
+  PlaylistItem *parent = this->item(itemIndex);
   return parent->getChildCount();
 }
 
 
 int PlaylistModel::columnCount(const QModelIndex &itemIndex) const {
-  return 2;
+  return 3;
 }
