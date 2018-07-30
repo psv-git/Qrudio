@@ -12,11 +12,6 @@ PlayerHandler::PlayerHandler(QObject *parent) : QObject(parent) {
     if ((*it)->isValid()) this->addStationToPlaylist(**it);
   }
 
-//  addStationToPlaylist(StationRecord("test1", "station11", "url11"));
-//  addStation(StationRecord("test2", "station2", "url2"));
-//  addStation(StationRecord("test3", "station3", "url3"));
-
-
   m_player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
   this->setVolume(0);
 }

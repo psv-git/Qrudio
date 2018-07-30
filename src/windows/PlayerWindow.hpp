@@ -49,7 +49,7 @@ private:
   bool m_isExit = false;
   bool m_isMuted = true;
   bool m_isRunOnTray = false;
-  bool m_isCategory = false;
+//  bool m_isCategory = false;
   bool m_isTrayWasClicked = false;
   int m_volume = 0;
   QString m_iconsPath;
@@ -60,6 +60,7 @@ private:
   void setTrayIcon();
   void playback(PLAYBACK playbackState);
   void toggleEditState();
+  void fillEditFields();
 
 };
 

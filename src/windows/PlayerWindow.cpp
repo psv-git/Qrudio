@@ -185,28 +185,9 @@ void PlayerWindow::onRunOnTrayBoxClick(bool checked) {
 
 void PlayerWindow::onPlaylistRowClick(const QModelIndex &index) {
   m_playerHandler->setSelectedIndex(index);
-
-  // edit section
   if (!m_ui->editTab->isVisible()) return;
-  if (m_editState == EDIT::NONE) {
-    m_ui->deleteStationButton->setEnabled(true);
-    return;
-  }
-
-  m_isCategory = static_cast<PlaylistItem*>(index.internalPointer())->isCategory();
-  if (m_isCategory) {
-    m_ui->categoryEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
-    if (m_editState == EDIT::EDIT || m_editState == EDIT::DELETE) {
-      m_ui->stationNameEdit->clear();
-      m_ui->stationUrlEdit->clear();
-    }
-  } else {
-    m_ui->categoryEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->model()->parent(index).siblingAtColumn(0)).toString());
-    if (m_editState == EDIT::EDIT || m_editState == EDIT::DELETE) {
-      m_ui->stationNameEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
-      m_ui->stationUrlEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(1)).toString());
-    }
-  }
+  if (m_editState == EDIT::NONE) m_ui->deleteStationButton->setEnabled(true);
+  fillEditFields();
 }
 
 
@@ -319,20 +300,50 @@ void PlayerWindow::playback(PLAYBACK playbackState) {
 // ----------------------------------------------------------------------------
 
 void PlayerWindow::toggleEditState() {
-  if (m_editState == EDIT::EDIT || m_editState == EDIT::DELETE) {
-//    m_ui->stationNameEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->currentIndex().siblingAtColumn(0)).toString());
-//    m_ui->stationUrlEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->currentIndex().siblingAtColumn(1)).toString());
-  } else {
-    m_ui->categoryEdit->clear();
-    m_ui->stationNameEdit->clear();
-    m_ui->stationUrlEdit->clear();
+  fillEditFields();
+
+  if (m_editState == EDIT::ADD || m_editState == EDIT::NONE) {
+    m_ui->categoryEdit->setEnabled(m_editState == EDIT::ADD);
+    m_ui->stationNameEdit->setEnabled(m_editState == EDIT::ADD);
+    m_ui->stationUrlEdit->setEnabled(m_editState == EDIT::ADD);
   }
-  m_ui->categoryEdit->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::EDIT);
-  m_ui->stationNameEdit->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::EDIT);
-  m_ui->stationUrlEdit->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::EDIT);
+
   m_ui->addPlaylistButton->setEnabled(m_editState == EDIT::NONE);
   m_ui->addStationButton->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::NONE);
   m_ui->editStationButton->setEnabled(m_editState == EDIT::EDIT || m_editState == EDIT::NONE);
   m_ui->saveStationButton->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::EDIT);
   m_ui->deleteStationButton->setEnabled(false);
+}
+
+
+void PlayerWindow::fillEditFields() {
+  if (m_editState == EDIT::NONE) {
+    m_ui->categoryEdit->clear();
+    m_ui->stationNameEdit->clear();
+    m_ui->stationUrlEdit->clear();
+    return;
+  }
+
+  QModelIndex index = m_ui->stationsTreeView->currentIndex();
+  if (!index.isValid()) return;
+
+  bool isCategory = static_cast<PlaylistItem*>(index.internalPointer())->isCategory();
+  if (m_editState == EDIT::EDIT) {
+    m_ui->categoryEdit->setEnabled(true);
+    m_ui->stationNameEdit->setEnabled(!isCategory);
+    m_ui->stationUrlEdit->setEnabled(!isCategory);
+  }
+  if (isCategory) {
+    m_ui->categoryEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
+    if (m_editState == EDIT::EDIT) {
+      m_ui->stationNameEdit->clear();
+      m_ui->stationUrlEdit->clear();
+    }
+  } else {
+    m_ui->categoryEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->model()->parent(index).siblingAtColumn(0)).toString());
+    if (m_editState == EDIT::EDIT) {
+      m_ui->stationNameEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
+      m_ui->stationUrlEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(1)).toString());
+    }
+  }
 }

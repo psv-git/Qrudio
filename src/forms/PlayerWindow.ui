@@ -1445,7 +1445,7 @@ QLineEdit::disabled {
      <enum>QFrame::Plain</enum>
     </property>
     <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAsNeeded</enum>
+     <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
     <property name="sizeAdjustPolicy">
      <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -1456,10 +1456,25 @@ QLineEdit::disabled {
     <property name="showDropIndicator" stdset="0">
      <bool>false</bool>
     </property>
+    <property name="dragEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="dragDropOverwriteMode">
+     <bool>false</bool>
+    </property>
+    <property name="dragDropMode">
+     <enum>QAbstractItemView::NoDragDrop</enum>
+    </property>
+    <property name="defaultDropAction">
+     <enum>Qt::IgnoreAction</enum>
+    </property>
     <property name="indentation">
      <number>10</number>
     </property>
     <property name="rootIsDecorated">
+     <bool>true</bool>
+    </property>
+    <property name="sortingEnabled">
      <bool>true</bool>
     </property>
     <property name="animated">
@@ -1473,6 +1488,9 @@ QLineEdit::disabled {
     </attribute>
     <attribute name="headerMinimumSectionSize">
      <number>30</number>
+    </attribute>
+    <attribute name="headerShowSortIndicator" stdset="0">
+     <bool>false</bool>
     </attribute>
    </widget>
   </widget>
