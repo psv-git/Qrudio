@@ -8,7 +8,7 @@
 
 
 enum class PLAYBACK : int { NONE, PLAY, BACKWARD, FORWARD, STOP };
-enum class EDIT : int { NONE, ADD, EDIT, DELETE };
+enum class EDIT : int { NONE, ADD, EDIT };
 enum THEME : int { NONE = 0, LIGHT = 1, DARK = 2 };
 Q_DECLARE_METATYPE(THEME) // for enable qvariant_cast<THEME>
 

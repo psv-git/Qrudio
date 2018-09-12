@@ -19,7 +19,8 @@ public:
   explicit PlayerWindow(QWidget *parent = nullptr);
   ~PlayerWindow();
 
-  void closeEvent(QCloseEvent *ev);
+//  void closeEvent(QCloseEvent *ev);
+  bool event(QEvent *event);
   void run();
 
 private slots:
@@ -35,7 +36,7 @@ private slots:
   void onThemeButtonRelease();
   void onRunOnTrayBoxClick(bool checked);
   void onPlaylistRowClick(const QModelIndex &index);
-  void onStationRowDoubleClick(const QModelIndex &index);
+  void onPlaylistRowDoubleClick();
   void onTrayIconClick(QSystemTrayIcon::ActivationReason r);
   void onVolumeSliderChange(int value);
 

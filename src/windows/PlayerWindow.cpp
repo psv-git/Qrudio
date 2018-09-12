@@ -33,9 +33,7 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
   setThemeColor(m_themeColor);
   m_ui->runOnTrayCheckBox->setChecked(m_isRunOnTray);
   m_ui->stationsTreeView->setModel(m_playerHandler->getPlaylistModel());
-//  m_ui->stationsTreeView->selectRow(m_playerHandler->getSelectedIndex());
-//  m_ui->stationsTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-//  m_ui->stationsTreeView->hideColumn(1); // hide url column
+  m_ui->stationsTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
   m_ui->stopButton->hide();
 
@@ -59,9 +57,8 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::
   connect(m_ui->darkThemeRadioButton, SIGNAL(released()), this, SLOT(onThemeButtonRelease()));
   connect(m_ui->runOnTrayCheckBox, SIGNAL(toggled(bool)), this, SLOT(onRunOnTrayBoxClick(bool)));
 
-//  connect(m_ui->stationsTreeView, SIGNAL(clicked(QModelIndex)), this, SLOT(onStationRowClick(QModelIndex)));
-//  connect(m_ui->stationsTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onStationRowDoubleClick(QModelIndex)));
   connect(m_ui->stationsTreeView, SIGNAL(clicked(QModelIndex)), this, SLOT(onPlaylistRowClick(QModelIndex)));
+  connect(m_ui->stationsTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onPlaylistRowDoubleClick()));
 
   connect(m_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onTrayIconClick(QSystemTrayIcon::ActivationReason)));
 }
@@ -87,22 +84,30 @@ void PlayerWindow::run() {
 
 // events =====================================================================
 
-void PlayerWindow::closeEvent(QCloseEvent *ev) {
-  if (m_isExit) { // close application by system tray
-    m_trayIcon->hide();
-    SettingsHandler::getInstance().saveSettings();
-    QApplication::quit();
-  } else { // hide/show window
-    ev->ignore();
-    toggleWindowVisibleAction();
+bool PlayerWindow::event(QEvent *event) {
+  if (event->type() == QEvent::Close) {
+    if (m_isExit) { // close application by system tray
+      m_trayIcon->hide();
+      SettingsHandler::getInstance().saveSettings();
+      QApplication::quit();
+    } else { // hide/show window
+      toggleWindowVisibleAction();
+    }
+  } else if (event->type() == QEvent::WindowStateChange) {
+    if (this->isMinimized()) this->close();
   }
+  event->ignore();
+  return true;
 }
 
 // private slots ==============================================================
 
 void PlayerWindow::toggleWindowVisibleAction() {
   if (this->isVisible()) this->hide();
-  else this->show();
+  else {
+    this->showNormal();
+    this->activateWindow();
+  }
 }
 
 
@@ -185,22 +190,25 @@ void PlayerWindow::onRunOnTrayBoxClick(bool checked) {
 
 void PlayerWindow::onPlaylistRowClick(const QModelIndex &index) {
   m_playerHandler->setSelectedIndex(index);
-  if (!m_ui->editTab->isVisible()) return;
-  if (m_editState == EDIT::NONE) m_ui->deleteStationButton->setEnabled(true);
-  fillEditFields();
+  if (m_ui->editTab->isVisible()) {
+    if (m_editState == EDIT::NONE) m_ui->deleteStationButton->setEnabled(true);
+    fillEditFields();
+  }
 }
 
 
-void PlayerWindow::onStationRowDoubleClick(const QModelIndex &index) {
-  playback(PLAYBACK::PLAY); // clicked station index was setted from single click slot
+void PlayerWindow::onPlaylistRowDoubleClick() {
+  playback(PLAYBACK::PLAY); // clicked station index was be set from single click slot
 }
 
 
+// this function have qt bug (emite signal activated)
 void PlayerWindow::onTrayIconClick(QSystemTrayIcon::ActivationReason r) {
   if (r != QSystemTrayIcon::Trigger && r != QSystemTrayIcon::DoubleClick) return;
+
   if (!m_isTrayWasClicked) { // first click on tray icon
     m_isTrayWasClicked = true;
-    Delay(200); // delay after first click on tray icon
+    Delay(300); // delay after first click on tray icon
   } else { // second click on tray icon
     m_isTrayWasClicked = false;
     toggleWindowVisibleAction();
@@ -301,13 +309,11 @@ void PlayerWindow::playback(PLAYBACK playbackState) {
 
 void PlayerWindow::toggleEditState() {
   fillEditFields();
-
   if (m_editState == EDIT::ADD || m_editState == EDIT::NONE) {
     m_ui->categoryEdit->setEnabled(m_editState == EDIT::ADD);
     m_ui->stationNameEdit->setEnabled(m_editState == EDIT::ADD);
     m_ui->stationUrlEdit->setEnabled(m_editState == EDIT::ADD);
   }
-
   m_ui->addPlaylistButton->setEnabled(m_editState == EDIT::NONE);
   m_ui->addStationButton->setEnabled(m_editState == EDIT::ADD || m_editState == EDIT::NONE);
   m_ui->editStationButton->setEnabled(m_editState == EDIT::EDIT || m_editState == EDIT::NONE);
@@ -317,33 +323,31 @@ void PlayerWindow::toggleEditState() {
 
 
 void PlayerWindow::fillEditFields() {
-  if (m_editState == EDIT::NONE) {
+  if (m_editState != EDIT::NONE) {
+    QModelIndex index = m_ui->stationsTreeView->currentIndex();
+    if (index.isValid()) {
+      bool isCategory = static_cast<PlaylistItem*>(index.internalPointer())->isCategory();
+      if (isCategory) {
+        m_ui->categoryEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
+      } else {
+        m_ui->categoryEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->model()->parent(index).siblingAtColumn(0)).toString());
+      }
+      if (m_editState == EDIT::EDIT) {
+        if (isCategory) {
+          m_ui->stationNameEdit->clear();
+          m_ui->stationUrlEdit->clear();
+        } else {
+          m_ui->stationNameEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
+          m_ui->stationUrlEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(1)).toString());
+        }
+        m_ui->categoryEdit->setEnabled(true);
+        m_ui->stationNameEdit->setEnabled(!isCategory);
+        m_ui->stationUrlEdit->setEnabled(!isCategory);
+      }
+    }
+  } else {
     m_ui->categoryEdit->clear();
     m_ui->stationNameEdit->clear();
     m_ui->stationUrlEdit->clear();
-    return;
-  }
-
-  QModelIndex index = m_ui->stationsTreeView->currentIndex();
-  if (!index.isValid()) return;
-
-  bool isCategory = static_cast<PlaylistItem*>(index.internalPointer())->isCategory();
-  if (m_editState == EDIT::EDIT) {
-    m_ui->categoryEdit->setEnabled(true);
-    m_ui->stationNameEdit->setEnabled(!isCategory);
-    m_ui->stationUrlEdit->setEnabled(!isCategory);
-  }
-  if (isCategory) {
-    m_ui->categoryEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
-    if (m_editState == EDIT::EDIT) {
-      m_ui->stationNameEdit->clear();
-      m_ui->stationUrlEdit->clear();
-    }
-  } else {
-    m_ui->categoryEdit->setText(m_ui->stationsTreeView->model()->data(m_ui->stationsTreeView->model()->parent(index).siblingAtColumn(0)).toString());
-    if (m_editState == EDIT::EDIT) {
-      m_ui->stationNameEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(0)).toString());
-      m_ui->stationUrlEdit->setText(m_ui->stationsTreeView->model()->data(index.siblingAtColumn(1)).toString());
-    }
   }
 }

@@ -1,0 +1,6 @@
+#include "TreeItemModel.hpp"
+
+TreeModel::TreeModel()
+{
+
+}

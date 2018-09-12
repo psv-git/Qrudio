@@ -1,0 +1,11 @@
+Difm            http://icecast.radiodfm.cdnvideo.ru:8000/dfm_m.mp3
+DiFm Deep       http://icecast.radiodfm.cdnvideo.ru/st24.mp3
+DiFm Noch       http://icecast.radiodfm.cdnvideo.ru/st05.mp3
+DiFm Club       http://icecast.radiodfm.cdnvideo.ru/st01.mp3
+Nashe           http://nashe1.hostingradio.ru/nashe-128.mp3
+Europa          http://ep128.streamr.ru
+LoungeFm        http://cast.loungefm.com.ua/loungefm
+Energy Trance   http://91.207.59.26/c13_3
+Energy Club     http://91.207.59.26/c4_2
+Record Chillout http://air2.radiorecord.ru:805/chil_320
+Вечерний Бриз   http://server.rpr.dp.ua:8000/live
